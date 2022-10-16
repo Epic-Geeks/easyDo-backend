@@ -8,8 +8,8 @@ const { saveCustomer } = require("../middlewares/basic-auth");
 const { signin, signup } = require("../controllers/customer.controller"); 
 
 
-customer.post("/signup", saveCustomer, signup);
-customer.post("/signin", signin); 
+customer.post("/customer/signup", saveCustomer, signup);
+customer.post("/customer/signin", signin); 
 customer.get("/customers", getAllCustomers);
 customer.post("/customer", createNewCustomer);
 customer.get("/customer/:id", getCustomer);
