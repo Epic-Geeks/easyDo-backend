@@ -1,6 +1,7 @@
 "use strict";
 
-const { Service } = require("../models");
+const { Service, ProviderModel } = require("../models");
+
 
 const express = require("express");
 // eslint-disable-next-line new-cap
@@ -17,23 +18,23 @@ services.get("/services", (req, res) => {
 });
 
 async function getAllServices(req, res) {
-  let allServices = await Service.getAllOrders();
+  let allServices = await Service.getAllServices(ProviderModel);
   res.status(200).json(allServices);
 }
 
 async function createNewService(req, res) {
   const obj = req.body;
-  let newService = await Service.createOrder(obj);
+  let newService = await Service.createService(obj);
   res.status(201).json(newService);
 }
 
 async function getService(req, res) {
-  let requestedService = await Service.getOrder(req.params.id);
+  let requestedService = await Service.getService(req.params.id, ProviderModel);
   res.status(200).json(requestedService);
 }
 
 async function deleteService(req, res) {
-  let deletedService = await Service.hideService(req.params.id);
+  let deletedService = await Service.hideService(req.params.id, ProviderModel);
   res.status(202).json(deletedService);
 }
 

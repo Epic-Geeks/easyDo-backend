@@ -17,9 +17,12 @@ class ServicesCollection {
     }
   }
 
-  getAllServices() {
+  getAllServices(Provider) {
     try {
-      const allServices = this.model.findAll();
+      const allServices = this.model.findAll({
+        where: { visibility: true },
+        include: [Provider],
+      });
       return allServices;
     } catch (e) {
       console.log("Error while getting services", e.message);
@@ -27,17 +30,20 @@ class ServicesCollection {
     }
   }
 
-  getService(id) {
+  getService(id, Provider) {
     try {
-      return this.model.findOne({ where: { id } });
+      return this.model.findOne({ where: { id }, include: [Provider] });
     } catch (e) {
       console.log("Error getting service", e.message);
     }
   }
 
-  async hideService(id) {
+  async hideService(id, Provider) {
     try {
-      let targetedService = await this.model.findOne({ where: { id } });
+      let targetedService = await this.model.findOne({
+        where: { id },
+        include: [Provider],
+      });
       return await targetedService.update({ visibility: false });
     } catch (e) {
       console.log(e);
