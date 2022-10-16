@@ -3,10 +3,13 @@
 const express = require("express");
 // eslint-disable-next-line new-cap
 const provider = express.Router();
+const { saveProvider } = require("../middlewares/basic-auth");
+const { signin, signup } = require("../controllers/provider.controller");
 
 const { Provider, ServiceModel } = require("../models");
 
-
+provider.post("/provider/signup", saveProvider, signup);
+provider.post("/provider/signin", signin);
 provider.get("/providers", getAllProviders);
 provider.post("/provider", createNewProvider);
 provider.get("/provider/:id", getProvider);
