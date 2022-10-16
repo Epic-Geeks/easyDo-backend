@@ -7,6 +7,7 @@ const order = require("./orders.model");
 const customer = require("./customer.model");
 const provider = require("./provider.model.js");
 const OrdersCollection = require("../collections/ordersCollection");
+const CustomerCollection = require("../collections/customerCollection");
 
 const POSTGRES_URL =
   process.env.DATABASE_URL ||
@@ -54,12 +55,13 @@ orderModel.belongsTo(serviceModel, {
 });
 
 const orders =  new OrdersCollection(orderModel);
+const customers = new CustomerCollection(customerModel);
 
 
 module.exports = {
   db: sequelize,
   Provider: providerModel,
-  Customer: customerModel,
+  Customer: customers,
   Order: orders,
   Service: serviceModel,
 };
