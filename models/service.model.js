@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    visibility: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
     providerID: {
       type: DataTypes.INTEGER,
       allowNull: false,
