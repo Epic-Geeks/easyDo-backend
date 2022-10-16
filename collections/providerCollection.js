@@ -39,7 +39,6 @@ class Provider {
     }
   }
 
-
   async updateProvider(id, obj, Services) {
     try {
       let targetedProvider = await this.model.findOne({
@@ -52,13 +51,19 @@ class Provider {
     }
   }
 
-  async hideProvider(id, Services) {
+  async holdServices(id, Services) {
     try {
       let targetedProvider = await this.model.findOne({
         where: { id },
         include: [Services],
       });
-      return await targetedProvider.update({ visibility: false });
+      let providerServices = await Services.findAll({
+        where: { providerID: targetedProvider.id },
+      });
+      await providerServices.forEach((service) =>
+        service.update({ visibility: false })
+      );
+      return providerServices;
     } catch (e) {
       console.log(e);
     }
@@ -70,6 +75,7 @@ class Provider {
         where: { id },
         include: [Services],
       });
+      await targetedProvider.update({ visibility: false, suspend: true });
       let providerServices = await Services.findAll({
         where: { providerID: targetedProvider.id },
       });

@@ -11,7 +11,7 @@ provider.get("/providers", getAllProviders);
 provider.post("/provider", createNewProvider);
 provider.get("/provider/:id", getProvider);
 provider.put("/provider/:id", updateProvider);
-provider.delete("/provider/:id", deleteProvider);
+provider.delete("/providerHold/:id", holdServices);
 
 provider.delete("/providerSus/:id", suspendProvider);
 
@@ -40,9 +40,9 @@ async function updateProvider(req, res) {
   res.status(200).json(requestedProvider);
 }
 
-async function deleteProvider(req, res) {
+async function holdServices(req, res) {
 
-  let deletedProvider = await Provider.hideProvider(req.params.id, ServiceModel);
+  let deletedProvider = await Provider.holdServices(req.params.id, ServiceModel);
   res.status(202).json(deletedProvider);
 }
 
