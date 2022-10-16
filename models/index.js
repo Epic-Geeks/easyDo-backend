@@ -2,10 +2,14 @@
 
 const { Sequelize, DataTypes } = require("sequelize");
 
+const admin = require(',/admin.model.js');
 const service = require("./service.model");
 const order = require("./orders.model");
 const customer = require("./customer.model");
 const provider = require("./provider.model.js");
+
+const AdminCollection = require("../collections/adminCollection");
+
 const OrdersCollection = require("../collections/ordersCollection");
 
 const CustomerCollection = require("../collections/customerCollection");
@@ -20,10 +24,17 @@ const POSTGRES_URL =
 
 const sequelize = new Sequelize(POSTGRES_URL);
 
+const adminModel = admin(sequelize, DataTypes);
 const serviceModel = service(sequelize, DataTypes);
 const orderModel = order(sequelize, DataTypes);
 const customerModel = customer(sequelize, DataTypes);
 const providerModel = provider(sequelize, DataTypes);
+
+adminModel.hasMany(orderModel, { foreignKey: "AdminID",sourceKey: "id", });
+orderModel.belongsTo(adminModel, { foreignKey: "AdminID",targetKey: "id", });
+
+adminModel.hasMany(serviceModel, { foreignKey: "AdminID",sourceKey: "id", });
+serviceModel.belongsTo(adminModel, { foreignKey: "AdminID",targetKey: "id", });
 
 
 providerModel.hasMany(serviceModel, {
@@ -60,11 +71,9 @@ orderModel.belongsTo(serviceModel, {
 });
 
 const orders =  new OrdersCollection(orderModel);
-
 const customers = new CustomerCollection(customerModel);
-
 const services = new ServicesCollection(serviceModel);
-
+const admins = new AdminCollection(adminModel);
 const providers = new ProviderCollection(providerModel);
 
 module.exports = {
@@ -74,6 +83,7 @@ module.exports = {
   customerModel: customerModel,
   Order: orders,
   Service: services,
+  Admin: admins,
   ProviderModel: providerModel,
   ServiceModel: serviceModel
 };
