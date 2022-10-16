@@ -1,10 +1,68 @@
 "use strict";
+const Customer = require("../models").customerModel;
+const Provider = require("../models").ProviderModel;
 
-module.exports = (req, res, next) => {
+const saveCustomer = async (req, res, next) => {
   try {
-    console.log("Basic Auth Middleware");
+
+    const username = await Customer.findOne({
+      where: {
+        username: req.body.username,
+      },
+    });
+
+    if (username) {
+      return res.status(409).send("Username already taken");
+    }
+
+
+    const email = await Customer.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+
+    if (email) {
+      return res.status(409).send("Email already taken");
+    }
+
     next();
-  } catch (error) {
-    console.log("Basic Auth Middleware error");
+  } catch (e) {
+    console.log(e);
   }
+};
+
+const saveProvider = async (req, res, next) => {
+  try {
+    const username = await Provider.findOne({
+      where: {
+        username: req.body.username,
+      },
+    });
+
+    if (username) {
+      return res.status(409).send("Username already taken");
+    }
+
+
+    const email = await Provider.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+
+    if (email) {
+      return res.status(409).send("Email already taken");
+    }
+
+    next();
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+
+module.exports = {
+  saveCustomer,
+  saveProvider,
 };

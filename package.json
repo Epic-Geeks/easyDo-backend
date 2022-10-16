@@ -17,10 +17,14 @@
   },
   "homepage": "https://github.com/Epic-Geeks/easyDo-backend#readme",
   "dependencies": {
+    "base-64": "^1.0.0",
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
+    "router": "^1.3.7",
     "sequelize": "^6.25.1"
   },
   "devDependencies": {
