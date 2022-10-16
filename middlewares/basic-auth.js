@@ -1,10 +1,36 @@
 "use strict";
+const Customer = require("../models").customerModel;
 
-module.exports = (req, res, next) => {
+const saveCustomer = async (req, res, next) => {
   try {
-    console.log("Basic Auth Middleware");
+
+    const username = await Customer.findOne({
+      where: {
+        username: req.body.username,
+      },
+    });
+
+    if (username) {
+      return res.status(409).send("Username already taken");
+    }
+
+
+    const email = await Customer.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+
+    if (email) {
+      return res.status(409).send("Email already taken");
+    }
+
     next();
-  } catch (error) {
-    console.log("Basic Auth Middleware error");
+  } catch (e) {
+    console.log(e);
   }
+};
+
+module.exports = {
+  saveCustomer
 };

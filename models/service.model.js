@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true
     },
-    providerID: {
+    provisibilityviderID: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
