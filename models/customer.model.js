@@ -1,5 +1,7 @@
 "use strict";
 
+const jwt = require("jsonwebtoken");
+
 /* istanbul ignore next */
 module.exports = (sequelize, DataTypes) => {
   const Customer = sequelize.define("CustomersRoles", {
@@ -15,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     suspend: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: false,
     },
     password: {
       type: DataTypes.STRING,
@@ -30,5 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: true,
     },
   });
+
   return Customer;
 };
+

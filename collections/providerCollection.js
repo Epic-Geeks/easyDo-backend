@@ -9,6 +9,7 @@ class Provider {
     console.log("Provider.check");
     next();
   }
+
   createProvider(obj) {
     try {
       return this.model.create(obj);
@@ -37,6 +38,7 @@ class Provider {
       console.log("Error getting provider", e.message);
     }
   }
+
 
   async updateProvider(id, obj, Services) {
     try {

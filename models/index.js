@@ -71,6 +71,7 @@ module.exports = {
   db: sequelize,
   Provider: providers,
   Customer: customers,
+  customerModel: customerModel,
   Order: orders,
   Service: services,
   ProviderModel: providerModel,

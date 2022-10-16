@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM("provider"),
       defaultValue: "provider",
     },
+    visibility: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
   });
   return Provider;
 };
