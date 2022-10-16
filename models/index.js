@@ -20,7 +20,7 @@ const ProviderCollection = require("../collections/providerCollection");
 
 const POSTGRES_URL =
   process.env.DATABASE_URL ||
-  "postgresql://postgres:1312@localhost:5432/postgres";
+  "postgresql://malek:1312@localhost:5432/postgres";
 
 const sequelize = new Sequelize(POSTGRES_URL);
 
