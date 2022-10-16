@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
+    visibility: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -24,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
     role: {
       type: DataTypes.ENUM("provider"),
       defaultValue: "provider",
+    },
+    visibility: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
   });
   return Provider;
