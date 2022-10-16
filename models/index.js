@@ -7,6 +7,8 @@ const order = require("./orders.model");
 const customer = require("./customer.model");
 const provider = require("./provider.model.js");
 const OrdersCollection = require("../collections/ordersCollection");
+const ServicesCollection = require("../collections/servicesCollection");
+
 
 const POSTGRES_URL =
   process.env.DATABASE_URL ||
@@ -54,6 +56,7 @@ orderModel.belongsTo(serviceModel, {
 });
 
 const orders =  new OrdersCollection(orderModel);
+const services = new ServicesCollection(serviceModel);
 
 
 module.exports = {
@@ -61,5 +64,5 @@ module.exports = {
   Provider: providerModel,
   Customer: customerModel,
   Order: orders,
-  Service: serviceModel,
+  Service: services,
 };
