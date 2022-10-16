@@ -16,6 +16,7 @@ customer.get("/customer/:id", bearerAuth, getCustomer);
 customer.put("/customer/:id", bearerAuth, updateCustomer);
 customer.delete("/customer/:id", bearerAuth, deleteCustomer);
 
+
 customer.get("/customer", (req, res) => {
   res.send("Hello Customer");
 });
