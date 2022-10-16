@@ -6,25 +6,25 @@ const customer = express.Router();
 const { Customer } = require("../models");
 const { saveCustomer } = require("../middlewares/basic-auth");
 const { signin, signup } = require("../controllers/customer.controller"); 
-
+const bearerAuth = require("../middlewares/bearer-auth");
 
 customer.post("/signup", saveCustomer, signup);
-customer.post("/signin", signin); 
-customer.get("/customers", getAllCustomers);
-customer.post("/customer", createNewCustomer);
-customer.get("/customer/:id", getCustomer);
-customer.put("/customer/:id", updateCustomer);
-customer.delete("/customer/:id", deleteCustomer);
+customer.post("/signin", signin);
+customer.get("/customers", bearerAuth, getAllCustomers);
+// customer.post("/customer", createNewCustomer);
+customer.get("/customer/:id", bearerAuth, getCustomer);
+customer.put("/customer/:id", bearerAuth, updateCustomer);
+customer.delete("/customer/:id", bearerAuth, deleteCustomer);
 
 customer.get("/customer", (req, res) => {
   res.send("Hello Customer");
 });
 
-async function createNewCustomer(req, res) {
-  const obj = req.body;
-  let newCustomer = await Customer.createCustomer(obj);
-  res.status(201).json(newCustomer);
-}
+// async function createNewCustomer(req, res) {
+//   const obj = req.body;
+//   let newCustomer = await Customer.createCustomer(obj);
+//   res.status(201).json(newCustomer);
+// }
 
 async function getAllCustomers(req, res) {
   let allCustomers = await Customer.getAllCustomers();
