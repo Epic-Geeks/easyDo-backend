@@ -14,7 +14,6 @@ const ServicesCollection = require("../collections/servicesCollection");
 
 const ProviderCollection = require("../collections/providerCollection");
 
-
 const POSTGRES_URL =
   process.env.DATABASE_URL ||
   "postgresql://postgres:1312@localhost:5432/postgres";
@@ -68,7 +67,6 @@ const services = new ServicesCollection(serviceModel);
 
 const providers = new ProviderCollection(providerModel);
 
-
 module.exports = {
   db: sequelize,
   Provider: providers,
@@ -76,4 +74,6 @@ module.exports = {
   customerModel: customerModel,
   Order: orders,
   Service: services,
+  ProviderModel: providerModel,
+  ServiceModel: serviceModel
 };
