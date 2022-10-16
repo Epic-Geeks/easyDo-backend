@@ -23,6 +23,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    token: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return jwt.sign(
+          {
+            username: this.username,
+          },
+          process.env.JWT_SECRET
+        );
+      },
+      set(tokenObj) {
+        return jwt.sign(tokenObj, process.env.JWT_SECRET);
+      },
+    },
     role: {
       type: DataTypes.ENUM("customer"),
       defaultValue: "customer",
@@ -32,6 +46,16 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: true,
     },
   });
+
+  Customer.authenticateToken = (token) => {
+    return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        return err;
+      } else {
+        return decoded;
+      }
+    });
+  };
 
   return Customer;
 };
