@@ -4,11 +4,12 @@ const express = require("express");
 const { Order } = require("../models");
 // eslint-disable-next-line new-cap
 const orders = express.Router();
+const serverError = require("../error-handlers/500");
 
 orders.get("/orders", getAllOrders);
 orders.post("/order", createNewOrder);
 
-orders.get("/order/:id", getOrder);
+orders.get("/order/:id", serverError, getOrder);
 orders.put("/orderStatus/:id/:condition", updateCondition);
 
 orders.delete("/order/:id", deleteOrder);

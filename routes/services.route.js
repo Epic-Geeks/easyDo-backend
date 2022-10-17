@@ -5,11 +5,12 @@ const { Service, ProviderModel } = require("../models");
 const express = require("express");
 // eslint-disable-next-line new-cap
 const services = express.Router();
+const serverError = require("../error-handlers/500");
 
 services.get("/services", getAllServices);
 services.post("/service", createNewService);
 
-services.get("/service/:id", getService);
+services.get("/service/:id", serverError, getService);
 services.delete("/service/:id", deleteService);
 
 services.get("/services", (req, res) => {

@@ -3,6 +3,8 @@ const { Admin } = require("../models");
 const express = require("express");
 // eslint-disable-next-line new-cap
 const admin = express.Router();
+const serverError = require("../error-handlers/500");
+
 
 admin.get("/admin", (req, res) => {
  res.send("Hello Admin");
@@ -10,7 +12,7 @@ admin.get("/admin", (req, res) => {
 
 admin.get("/admin", getAllAdmin);
 admin.post("/admin", createNewAdmin);
-admin.get("/admin/:id", getAdminById);
+admin.get("/admin/:id",serverError,  getAdminById);
 admin.put("/admin/:id", updateAdmin);
 admin.delete("/admin/:id", deleteAdmin);
 

@@ -18,7 +18,6 @@ module.exports = async (req, res, next) => {
   if (!requestedItem) {
     return res.send(`${requested} not found`);
   } else {
-    //  req.customer = customer;
     return next();
   }
 };

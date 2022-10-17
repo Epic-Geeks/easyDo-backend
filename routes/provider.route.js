@@ -5,6 +5,7 @@ const express = require("express");
 const provider = express.Router();
 const { saveProvider } = require("../middlewares/basic-auth");
 const { signin, signup } = require("../controllers/provider.controller");
+const serverError = require("../error-handlers/500");
 
 const { Provider, ServiceModel } = require("../models");
 
@@ -12,7 +13,7 @@ provider.post("/provider/signup", saveProvider, signup);
 provider.post("/provider/signin", signin);
 provider.get("/providers", getAllProviders);
 provider.post("/provider", createNewProvider);
-provider.get("/provider/:id", getProvider);
+provider.get("/provider/:id", serverError, getProvider);
 provider.put("/provider/:id", updateProvider);
 provider.delete("/providerHold/:id", holdServices);
 
