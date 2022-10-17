@@ -3,15 +3,15 @@
 const express = require("express");
 // eslint-disable-next-line new-cap
 const provider = express.Router();
-const { saveProvider } = require("../middlewares/basic-auth");
+const { checkProvider } = require("../middlewares/basic-auth");
 const { signin, signup } = require("../controllers/provider.controller");
 const serverError = require("../error-handlers/500");
 
 const { providerAuth } = require("../middlewares/bearer-auth");
 
-const { Provider, ServiceModel } = require("../models");
+const { Provider, serviceModel } = require("../models");
 
-provider.post("/provider/signup", saveProvider, signup);
+provider.post("/provider/signup", checkProvider, signup);
 provider.post("/provider/signin", signin);
 provider.get("/providers", providerAuth, getAllProviders);
 provider.post("/provider", createNewProvider);
@@ -22,49 +22,93 @@ provider.delete("/providerHold/:id", providerAuth, holdServices);
 provider.delete("/providerSus/:id", providerAuth, suspendProvider);
 
 provider.get("/provider", (req, res) => {
- res.send("Hello Provider");
+  res.send("Hello Provider");
 });
 
 async function createNewProvider(req, res) {
- const obj = req.body;
- let newProvider = await Provider.createProvider(obj);
- res.status(201).json(newProvider);
+  try {
+    const obj = req.body;
+    let newProvider = await Provider.createProvider(obj);
+    res.status(201).json(newProvider);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
 async function getAllProviders(req, res) {
- let allProviders = await Provider.getAllProviders(ServiceModel);
- res.status(200).json(allProviders);
+  try {
+    let allProviders = await Provider.getAllProviders(serviceModel);
+    res.status(200).json(allProviders);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
 async function getProvider(req, res) {
- let requestedProvider = await Provider.getProvider(
-  req.params.id,
-  ServiceModel
- );
- res.status(200).json(requestedProvider);
+  try {
+    let requestedProvider = await Provider.getProvider(
+      req.params.id,
+      serviceModel
+    );
+    res.status(200).json(requestedProvider);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
 async function updateProvider(req, res) {
- let requestedProvider = await Provider.updateProvider(
-  req.params.id,
-  req.body,
-  ServiceModel
- );
- res.status(200).json(requestedProvider);
+  try {
+    let requestedProvider = await Provider.updateProvider(
+      req.params.id,
+      req.body,
+      serviceModel
+    );
+    res.status(200).json(requestedProvider);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
 async function holdServices(req, res) {
- let deletedProvider = await Provider.holdServices(req.params.id, ServiceModel);
- res.status(202).json(deletedProvider);
+  try {
+    let deletedProvider = await Provider.holdServices(
+      req.params.id,
+      serviceModel
+    );
+    res.status(202).json(deletedProvider);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
 async function suspendProvider(req, res) {
- let deletedProvider = await Provider.suspendProvider(
-  req.params.id,
-  ServiceModel
- );
- res.status(202).json(deletedProvider);
+  try {
+    let deletedProvider = await Provider.suspendProvider(
+      req.params.id,
+      serviceModel
+    );
+    res.status(202).json(deletedProvider);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
-console.log("provider.route.js");
 module.exports = provider;

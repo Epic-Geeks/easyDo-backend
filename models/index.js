@@ -9,15 +9,11 @@ const order = require("./orders.model");
 const customer = require("./customer.model");
 const provider = require("./provider.model.js");
 
-const AdminCollection = require("../collections/adminCollection");
-
-const OrdersCollection = require("../collections/ordersCollection");
-
-const CustomerCollection = require("../collections/customerCollection");
-
 const ServicesCollection = require("../collections/servicesCollection");
 
 const ProviderCollection = require("../collections/providerCollection");
+
+const Collection = require("../collections/collections");
 
 const POSTGRES_URL =
   process.env.DATABASE_URL || "postgresql://malek:1312@localhost:5432/postgres";
@@ -66,10 +62,10 @@ orderModel.belongsTo(serviceModel, {
   targetKey: "id",
 });
 
-const orders = new OrdersCollection(orderModel);
-const customers = new CustomerCollection(customerModel);
+const orders = new Collection(orderModel);
+const customers = new Collection(customerModel);
 const services = new ServicesCollection(serviceModel);
-const admins = new AdminCollection(adminModel);
+const admins = new Collection(adminModel);
 const providers = new ProviderCollection(providerModel);
 
 module.exports = {
@@ -81,7 +77,7 @@ module.exports = {
   orderModel: orderModel,
   Service: services,
   Admin: admins,
-  ProviderModel: providerModel,
-  ServiceModel: serviceModel,
-  AdminModel: adminModel
+  providerModel: providerModel,
+  serviceModel: serviceModel,
+  adminModel: adminModel
 };

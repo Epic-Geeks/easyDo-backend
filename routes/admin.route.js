@@ -17,40 +17,65 @@ admin.get("/admins", adminAuth, getAllAdmins);
 admin.get("/admin/:id", adminAuth, getAdminById);
 admin.put("/admin/:id", adminAuth, updateAdmin);
 admin.delete("/admin/:id", adminAuth, deleteAdmin);
+admin.delete("/suspendadmin/:id", adminAuth, suspendAdmin);
 
 async function getAllAdmins(req, res) {
   try {
-    let allAdmin = await Admin.getAllAdmins();
+    let allAdmin = await Admin.getAll();
     res.status(200).json(allAdmin);
   } catch (error) {
     console.log(error);
+    res.status(200).json({
+      error: error
+    });
   }
 }
 
 async function getAdminById(req, res) {
   try {
-    let AdminById = await Admin.getAdminById(req.params.id);
+    let AdminById = await Admin.getById(req.params.id);
     res.status(200).json(AdminById);
   } catch (error) {
     console.log(error);
+    res.status(200).json({
+      error: error
+    });
   }
 }
 
 async function updateAdmin(req, res) {
   try {
-    let updateAdmin = await Admin.updateAdmin(req.params.id, req.body);
+    let updateAdmin = await Admin.update(req.params.id, req.body);
     res.status(200).json(updateAdmin);
   } catch (error) {
     console.log(error);
+    res.status(200).json({
+      error: error
+    });
   }
 }
 
 async function deleteAdmin(req, res) {
   try {
-    let deletedAdmin = await Admin.hideAdmin(req.params.id);
+    let deletedAdmin = await Admin.hide(req.params.id);
     res.status(202).json(deletedAdmin);
   } catch (error) {
     console.log(error);
+    res.status(200).json({
+      error: error
+    });
+  }
+}
+
+async function suspendAdmin(req, res) {
+  try {
+    let suspendAdmin = await Admin.suspend(req.params.id);
+    res.status(202).json( suspendAdmin);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error
+    });
   }
 }
 
