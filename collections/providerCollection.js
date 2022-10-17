@@ -63,7 +63,7 @@ class Provider {
       await providerServices.forEach((service) =>
         service.update({ visibility: false })
       );
-      return providerServices;
+      return targetedProvider;
     } catch (e) {
       console.log(e);
     }

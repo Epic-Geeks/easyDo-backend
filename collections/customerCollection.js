@@ -5,12 +5,12 @@ class customerCollection {
     this.model = model;
   }
   // CRUD methods for the collection go here
-  check (req, res, next) {
+  check(req, res, next) {
     console.log("Customer.check");
     next();
   }
 
-  createCustomer (obj) {
+  createCustomer(obj) {
     try {
       return this.model.create(obj);
     } catch (e) {
@@ -18,7 +18,7 @@ class customerCollection {
     }
   }
 
-  getAllCustomers () {
+  getAllCustomers() {
     try {
       const allCustomers = this.model.findAll({ where: { visibility: true } });
       return allCustomers;
@@ -28,7 +28,7 @@ class customerCollection {
     }
   }
 
-  getCustomer (id) {
+  getCustomer(id) {
     try {
       return this.model.findOne({ where: { id } });
     } catch (e) {
@@ -36,7 +36,7 @@ class customerCollection {
     }
   }
 
-  async updateCustomer (id, obj) {
+  async updateCustomer(id, obj) {
     try {
       let targetedCustomer = await this.model.findOne({ where: { id } });
       return await targetedCustomer.update(obj);
@@ -45,7 +45,7 @@ class customerCollection {
     }
   }
 
-  async hideCustomer (id) {
+  async hideCustomer(id) {
 
     try {
       let targetedCustomer = await this.model.findOne({ where: { id } });
@@ -55,10 +55,10 @@ class customerCollection {
     }
   }
 
-  async suspendCustomer (id) {
+  async suspendCustomer(id) {
     try {
       let targetedCustomer = await this.model.findOne({ where: { id } });
-      return await targetedCustomer.update({ status: "suspended" });
+      return await targetedCustomer.update({ status: "suspended" });// need to edit
     } catch (e) {
       console.log(e);
     }
