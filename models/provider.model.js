@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 /* istanbul ignore next */
 module.exports = (sequelize, DataTypes) => {
+
   const Provider = sequelize.define("ProvidersRoles", {
     username: {
       type: DataTypes.STRING,
@@ -49,15 +50,15 @@ module.exports = (sequelize, DataTypes) => {
 
   });
 
-  Provider.authenticateToken = (token) => {
-    return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) {
-        return err;
-      } else {
-        return decoded;
-      }
-    });
-  };
+ Provider.authenticateToken = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+   if (err) {
+    return err;
+   } else {
+    return decoded;
+   }
+  });
+ };
 
-  return Provider;
+ return Provider;
 };

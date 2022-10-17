@@ -2,6 +2,7 @@
 
 const { Sequelize, DataTypes } = require("sequelize");
 
+
 const admin = require("./admin.model");
 const service = require("./service.model");
 const order = require("./orders.model");
@@ -19,8 +20,7 @@ const ServicesCollection = require("../collections/servicesCollection");
 const ProviderCollection = require("../collections/providerCollection");
 
 const POSTGRES_URL =
-  process.env.DATABASE_URL ||
-  "postgresql://malek:1312@localhost:5432/postgres";
+  process.env.DATABASE_URL || "postgresql://malek:1312@localhost:5432/postgres";
 
 const sequelize = new Sequelize(POSTGRES_URL);
 
@@ -30,12 +30,8 @@ const orderModel = order(sequelize, DataTypes);
 const customerModel = customer(sequelize, DataTypes);
 const providerModel = provider(sequelize, DataTypes);
 
-// adminModel.hasMany(orderModel, { foreignKey: "AdminID",sourceKey: "id", });
-// orderModel.belongsTo(adminModel, { foreignKey: "AdminID",targetKey: "id", });
-
-// adminModel.hasMany(serviceModel, { foreignKey: "AdminID",sourceKey: "id", });
-// serviceModel.belongsTo(adminModel, { foreignKey: "AdminID",targetKey: "id", });
-
+adminModel.hasMany(serviceModel, { foreignKey: "AdminID", sourceKey: "id" });
+serviceModel.belongsTo(adminModel, { foreignKey: "AdminID", targetKey: "id" });
 
 providerModel.hasMany(serviceModel, {
   foreignKey: "providerID",
@@ -82,6 +78,7 @@ module.exports = {
   Customer: customers,
   customerModel: customerModel,
   Order: orders,
+  orderModel: orderModel,
   Service: services,
   Admin: admins,
   ProviderModel: providerModel,

@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 /* istanbul ignore next */
 module.exports = (sequelize, DataTypes) => {
+
   const Admin = sequelize.define("AdminRoles", {
     username: {
       type: DataTypes.STRING,

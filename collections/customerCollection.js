@@ -1,22 +1,22 @@
 "use strict";
 
 class customerCollection {
-  constructor(model) {
-    this.model = model;
-  }
-  // CRUD methods for the collection go here
-  check(req, res, next) {
-    console.log("Customer.check");
-    next();
-  }
+ constructor(model) {
+  this.model = model;
+ }
+ // CRUD methods for the collection go here
+ check(req, res, next) {
+  console.log("Customer.check");
+  next();
+ }
 
-  createCustomer(obj) {
-    try {
-      return this.model.create(obj);
-    } catch (e) {
-      console.log("Error creating new customer", e.message);
-    }
+ createCustomer(obj) {
+  try {
+   return this.model.create(obj);
+  } catch (e) {
+   console.log("Error creating new customer", e.message);
   }
+ }
 
   getAllCustomers() {
     try {
@@ -27,6 +27,8 @@ class customerCollection {
       return "Error while getting customers";
     }
   }
+ }
+
 
   getCustomer(id) {
     try {
@@ -35,6 +37,7 @@ class customerCollection {
       console.log("Error getting customer", e.message);
     }
   }
+ }
 
   async updateCustomer(id, obj) {
     try {
@@ -44,6 +47,7 @@ class customerCollection {
       console.log(e);
     }
   }
+ }
 
   async hideCustomer(id) {
 
@@ -54,6 +58,7 @@ class customerCollection {
       console.log(e);
     }
   }
+ }
 
   async suspendCustomer(id) {
     try {
@@ -63,7 +68,7 @@ class customerCollection {
       console.log(e);
     }
   }
-
+ }
 }
 
 module.exports = customerCollection;

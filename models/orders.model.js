@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
+
   const order = sequelize.define("OrdersTest", {
     orderNotes: {
       type: DataTypes.STRING,

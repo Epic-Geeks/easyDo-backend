@@ -1,4 +1,5 @@
 "use strict";
+
 const { Admin } = require("../models/index.js");
 const express = require("express");
 // eslint-disable-next-line new-cap
@@ -7,7 +8,7 @@ const { checkAdmin } = require("../middlewares/basic-auth");
 const { signup, signin } = require("../controllers/admin.controller.js");
 const { adminAuth } = require("../middlewares/bearer-auth");
 admin.get("/admin", (req, res) => {
-  res.send("Hello Admin");
+ res.send("Hello Admin");
 });
 
 admin.post("/admin/signup", checkAdmin, signup);
@@ -16,19 +17,6 @@ admin.get("/admins", adminAuth, getAllAdmins);
 admin.get("/admin/:id", adminAuth, getAdminById);
 admin.put("/admin/:id", adminAuth, updateAdmin);
 admin.delete("/admin/:id", adminAuth, deleteAdmin);
-
-
-
-
-// async function createNewAdmin(req, res) {
-//   try {
-//     const obj = req.body;
-//     let newAdmin = await Admin.createAdmin(obj)
-//     res.status(201).json(newAdmin);
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
 
 async function getAllAdmins(req, res) {
   try {
