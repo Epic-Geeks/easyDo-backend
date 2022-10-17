@@ -1,13 +1,12 @@
-'use strict';
+"use strict";
 
-const {modelOrder, modelService}= require('./models/index.js');
 
 class AdminCollection {
   constructor(model) {
     this.model = model;
   }
 
-  createAdmin (obj) {
+  createAdmin(obj) {
     try {
       return this.model.create(obj);
     } catch (e) {
@@ -15,7 +14,7 @@ class AdminCollection {
     }
   }
 
-  getAllAdmin () {
+  getAllAdmins() {
     try {
       const allAdmin = this.model.findAll();
       return allAdmin;
@@ -25,7 +24,7 @@ class AdminCollection {
     }
   }
 
-  getAdminById (id) {
+  getAdminById(id) {
     try {
       return this.model.findOne({ where: { id } });
     } catch (e) {
@@ -33,7 +32,7 @@ class AdminCollection {
     }
   }
 
-  async updateAdmin (id, obj) {
+  async updateAdmin(id, obj) {
     try {
       let targetedAdmin = await this.model.findOne({ where: { id } });
       return await targetedAdmin.update(obj);
@@ -42,31 +41,21 @@ class AdminCollection {
     }
   }
 
-  async deleteAdmin(id) {
+  async hideAdmin(id) {
     try {
-        return await this.model.destroy({ where: { id } });
+      let targetedAdmin = await this.model.findOne({ where: { id } });
+      return await targetedAdmin.update({ visibility: false });
     } catch (e) {
-        console.error(`Error While Deleting Admin With Id : ${id}`);
-    }
-}
-
-async getAllOrderByAdmin () {
-    try {
-      const allOrder = this.model.findAll({ modelOrder });
-      return allOrder;
-    } catch (e) {
-      console.log("Error while getting all order by Admin", e.message);
-      return "Error while getting all order by Admin";
+      console.error(`Error While Deleting Admin With Id : ${id}`);
     }
   }
 
-  async getAllServiceByAdmin () {
+  async suspendAdmin(id) {
     try {
-      const allService = this.model.findAll({ modelService });
-      return allService;
+      let targetedAdmin = await this.model.findOne({ where: { id } });
+      return await targetedAdmin.update({ visibility: false, suspend: true });
     } catch (e) {
-      console.log("Error while getting all Service by Admin", e.message);
-      return "Error while getting all Service by Admin";
+      console.log(e);
     }
   }
 

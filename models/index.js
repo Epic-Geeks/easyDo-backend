@@ -2,7 +2,7 @@
 
 const { Sequelize, DataTypes } = require("sequelize");
 
-const admin = require(',/admin.model.js');
+const admin = require("./admin.model");
 const service = require("./service.model");
 const order = require("./orders.model");
 const customer = require("./customer.model");
@@ -30,11 +30,11 @@ const orderModel = order(sequelize, DataTypes);
 const customerModel = customer(sequelize, DataTypes);
 const providerModel = provider(sequelize, DataTypes);
 
-adminModel.hasMany(orderModel, { foreignKey: "AdminID",sourceKey: "id", });
-orderModel.belongsTo(adminModel, { foreignKey: "AdminID",targetKey: "id", });
+// adminModel.hasMany(orderModel, { foreignKey: "AdminID",sourceKey: "id", });
+// orderModel.belongsTo(adminModel, { foreignKey: "AdminID",targetKey: "id", });
 
-adminModel.hasMany(serviceModel, { foreignKey: "AdminID",sourceKey: "id", });
-serviceModel.belongsTo(adminModel, { foreignKey: "AdminID",targetKey: "id", });
+// adminModel.hasMany(serviceModel, { foreignKey: "AdminID",sourceKey: "id", });
+// serviceModel.belongsTo(adminModel, { foreignKey: "AdminID",targetKey: "id", });
 
 
 providerModel.hasMany(serviceModel, {
@@ -70,7 +70,7 @@ orderModel.belongsTo(serviceModel, {
   targetKey: "id",
 });
 
-const orders =  new OrdersCollection(orderModel);
+const orders = new OrdersCollection(orderModel);
 const customers = new CustomerCollection(customerModel);
 const services = new ServicesCollection(serviceModel);
 const admins = new AdminCollection(adminModel);
@@ -85,5 +85,6 @@ module.exports = {
   Service: services,
   Admin: admins,
   ProviderModel: providerModel,
-  ServiceModel: serviceModel
+  ServiceModel: serviceModel,
+  AdminModel: adminModel
 };

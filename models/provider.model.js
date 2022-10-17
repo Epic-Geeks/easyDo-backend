@@ -42,10 +42,11 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     role: {
+      // eslint-disable-next-line new-cap
       type: DataTypes.ENUM("provider"),
       defaultValue: "provider",
     },
-    
+
   });
 
   Provider.authenticateToken = (token) => {
