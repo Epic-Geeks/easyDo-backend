@@ -1,45 +1,57 @@
 "use strict";
-const { Admin } = require("../models");
+
+const { Admin } = require("../models/index.js");
 const express = require("express");
 // eslint-disable-next-line new-cap
 const admin = express.Router();
-const serverError = require("../error-handlers/500");
-
-
+const { checkAdmin } = require("../middlewares/basic-auth");
+const { signup, signin } = require("../controllers/admin.controller.js");
+const { adminAuth } = require("../middlewares/bearer-auth");
 admin.get("/admin", (req, res) => {
  res.send("Hello Admin");
 });
 
-admin.get("/admin", getAllAdmin);
-admin.post("/admin", createNewAdmin);
-admin.get("/admin/:id",serverError,  getAdminById);
-admin.put("/admin/:id", updateAdmin);
-admin.delete("/admin/:id", deleteAdmin);
+admin.post("/admin/signup", checkAdmin, signup);
+admin.post("/admin/signin", signin);
+admin.get("/admins", adminAuth, getAllAdmins);
+admin.get("/admin/:id", adminAuth, getAdminById);
+admin.put("/admin/:id", adminAuth, updateAdmin);
+admin.delete("/admin/:id", adminAuth, deleteAdmin);
 
-async function createNewAdmin(req, res) {
- const obj = req.body;
- let newAdmin = await Admin.createAdmin(obj);
- res.status(201).json(newAdmin);
-}
-
-async function getAllAdmin(req, res) {
- let allAdmin = await Admin.getAllAdmin();
- res.status(200).json(allAdmin);
+async function getAllAdmins(req, res) {
+  try {
+    let allAdmin = await Admin.getAllAdmins();
+    res.status(200).json(allAdmin);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function getAdminById(req, res) {
- let AdminById = await Admin.getAdminById(req.params.id);
- res.status(200).json(AdminById);
+  try {
+    let AdminById = await Admin.getAdminById(req.params.id);
+    res.status(200).json(AdminById);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function updateAdmin(req, res) {
- let updateAdmin = await Admin.updateAdmin(req.params.id, req.body);
- res.status(200).json(updateAdmin);
+  try {
+    let updateAdmin = await Admin.updateAdmin(req.params.id, req.body);
+    res.status(200).json(updateAdmin);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function deleteAdmin(req, res) {
- let deletedAdmin = await Admin.deleteAdmin(req.params.id);
- res.status(202).json(deletedAdmin);
+  try {
+    let deletedAdmin = await Admin.hideAdmin(req.params.id);
+    res.status(202).json(deletedAdmin);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 console.log("admin.route.js");

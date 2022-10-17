@@ -51,21 +51,22 @@ class Provider {
   }
  }
 
- async holdServices(id, Services) {
-  try {
-   let targetedProvider = await this.model.findOne({
-    where: { id },
-    include: [Services],
-   });
-   let providerServices = await Services.findAll({
-    where: { providerID: targetedProvider.id },
-   });
-   await providerServices.forEach((service) =>
-    service.update({ visibility: false })
-   );
-   return providerServices;
-  } catch (e) {
-   console.log(e);
+  async holdServices(id, Services) {
+    try {
+      let targetedProvider = await this.model.findOne({
+        where: { id },
+        include: [Services],
+      });
+      let providerServices = await Services.findAll({
+        where: { providerID: targetedProvider.id },
+      });
+      await providerServices.forEach((service) =>
+        service.update({ visibility: false })
+      );
+      return targetedProvider;
+    } catch (e) {
+      console.log(e);
+    }
   }
  }
 

@@ -7,17 +7,19 @@ const { saveProvider } = require("../middlewares/basic-auth");
 const { signin, signup } = require("../controllers/provider.controller");
 const serverError = require("../error-handlers/500");
 
+const { providerAuth } = require("../middlewares/bearer-auth");
+
 const { Provider, ServiceModel } = require("../models");
 
 provider.post("/provider/signup", saveProvider, signup);
 provider.post("/provider/signin", signin);
-provider.get("/providers", getAllProviders);
+provider.get("/providers", providerAuth, getAllProviders);
 provider.post("/provider", createNewProvider);
-provider.get("/provider/:id", serverError, getProvider);
-provider.put("/provider/:id", updateProvider);
-provider.delete("/providerHold/:id", holdServices);
 
-provider.delete("/providerSus/:id", suspendProvider);
+provider.get("/provider/:id", serverError, providerAuth, getProvider);
+provider.put("/provider/:id", providerAuth, updateProvider);
+provider.delete("/providerHold/:id", providerAuth, holdServices);
+provider.delete("/providerSus/:id", providerAuth, suspendProvider);
 
 provider.get("/provider", (req, res) => {
  res.send("Hello Provider");

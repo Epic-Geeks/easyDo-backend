@@ -2,7 +2,8 @@
 
 const { Sequelize, DataTypes } = require("sequelize");
 
-const admin = require("./admin.model.js");
+
+const admin = require("./admin.model");
 const service = require("./service.model");
 const order = require("./orders.model");
 const customer = require("./customer.model");
@@ -28,9 +29,6 @@ const serviceModel = service(sequelize, DataTypes);
 const orderModel = order(sequelize, DataTypes);
 const customerModel = customer(sequelize, DataTypes);
 const providerModel = provider(sequelize, DataTypes);
-
-adminModel.hasMany(orderModel, { foreignKey: "AdminID", sourceKey: "id" });
-orderModel.belongsTo(adminModel, { foreignKey: "AdminID", targetKey: "id" });
 
 adminModel.hasMany(serviceModel, { foreignKey: "AdminID", sourceKey: "id" });
 serviceModel.belongsTo(adminModel, { foreignKey: "AdminID", targetKey: "id" });
@@ -83,6 +81,7 @@ module.exports = {
   orderModel: orderModel,
   Service: services,
   Admin: admins,
-  providerModel: providerModel,
-  serviceModel: serviceModel,
+  ProviderModel: providerModel,
+  ServiceModel: serviceModel,
+  AdminModel: adminModel
 };

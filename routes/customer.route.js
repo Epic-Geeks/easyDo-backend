@@ -6,17 +6,17 @@ const customer = express.Router();
 const { Customer } = require("../models");
 const { saveCustomer } = require("../middlewares/basic-auth");
 const { signin, signup } = require("../controllers/customer.controller");
-const bearerAuth = require("../middlewares/bearer-auth");
 const serverError = require("../error-handlers/500");
-
+const { customerAuth } = require("../middlewares/bearer-auth");
 
 customer.post("/signup", saveCustomer, signup);
 customer.post("/signin", signin);
-customer.get("/customers", bearerAuth, getAllCustomers);
+customer.get("/customers", customerAuth, getAllCustomers);
 // customer.post("/customer", createNewCustomer);
-customer.get("/customer/:id", serverError, bearerAuth, getCustomer);
-customer.put("/customer/:id", bearerAuth, updateCustomer);
-customer.delete("/customer/:id", bearerAuth, deleteCustomer);
+
+customer.get("/customer/:id",serverError, customerAuth, getCustomer);
+customer.put("/customer/:id", customerAuth, updateCustomer);
+customer.delete("/customer/:id", customerAuth, deleteCustomer);
 
 customer.get("/customer", (req, res) => {
  res.send("Hello Customer");
