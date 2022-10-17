@@ -4,58 +4,60 @@ const Provider = require("../models").ProviderModel;
 const { AdminModel } = require("../models");
 
 const saveCustomer = async (req, res, next) => {
- try {
-  const username = await Customer.findOne({
-   where: {
-    username: req.body.username,
-   },
-  });
+  try {
+    const username = await Customer.findOne({
+      where: {
+        username: req.body.username,
+      },
+    });
 
-  if (username) {
-   return res.status(409).send("Username already taken");
+    if (username) {
+      return res.status(409).send("Username already taken");
+    }
+
+    const email = await Customer.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+
+    if (email) {
+      return res.status(409).send("Email already taken");
+    }
+
+    next();
+  } catch (e) {
+    console.log(e);
   }
-
-  const email = await Customer.findOne({
-   where: {
-    email: req.body.email,
-   },
-  });
-
-  if (email) {
-   return res.status(409).send("Email already taken");
-  }
-
-  next();
- } catch (e) {
-  console.log(e);
- }
 };
 
 const saveProvider = async (req, res, next) => {
- try {
-  const username = await Provider.findOne({
-   where: {
-    username: req.body.username,
-   },
-  });
+  try {
+    const username = await Provider.findOne({
+      where: {
+        username: req.body.username,
+      },
+    });
 
-  if (username) {
-   return res.status(409).send("Username already taken");
+    if (username) {
+      return res.status(409).send("Username already taken");
+    }
+
+    const email = await Provider.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+
+    if (email) {
+      return res.status(409).send("Email already taken");
+    }
+  } catch (e) {
+    console.log(e);
   }
-
-  const email = await Provider.findOne({
-   where: {
-    email: req.body.email,
-   },
-  });
-
-  if (email) {
-   return res.status(409).send("Email already taken");
-  }
-
+};
 
 const checkAdmin = async (req, res, next) => {
-
   try {
     const username = await AdminModel.findOne({
       where: {
@@ -66,7 +68,6 @@ const checkAdmin = async (req, res, next) => {
     if (username) {
       return res.status(409).send("Username already taken");
     }
-
 
     const email = await AdminModel.findOne({
       where: {
@@ -82,11 +83,10 @@ const checkAdmin = async (req, res, next) => {
   } catch (e) {
     console.log(e);
   }
-
 };
 
 module.exports = {
   saveCustomer,
   saveProvider,
-  checkAdmin
+  checkAdmin,
 };

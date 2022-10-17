@@ -8,7 +8,7 @@ const { checkAdmin } = require("../middlewares/basic-auth");
 const { signup, signin } = require("../controllers/admin.controller.js");
 const { adminAuth } = require("../middlewares/bearer-auth");
 admin.get("/admin", (req, res) => {
- res.send("Hello Admin");
+  res.send("Hello Admin");
 });
 
 admin.post("/admin/signup", checkAdmin, signup);

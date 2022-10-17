@@ -1,9 +1,9 @@
 "use strict";
 
 class AdminCollection {
- constructor(model) {
-  this.model = model;
- }
+  constructor(model) {
+    this.model = model;
+  }
 
   createAdmin(obj) {
     try {
@@ -12,9 +12,8 @@ class AdminCollection {
       console.log("Error creating new Admin", e.message);
     }
   }
- }
 
-getAllAdmins() {
+  getAllAdmins() {
     try {
       const allAdmin = this.model.findAll();
       return allAdmin;
@@ -23,7 +22,6 @@ getAllAdmins() {
       return "Error while getting Admins";
     }
   }
- }
 
   getAdminById(id) {
     try {
@@ -32,7 +30,6 @@ getAllAdmins() {
       console.log("Error getting Admin", e.message);
     }
   }
- }
 
   async updateAdmin(id, obj) {
     try {
@@ -42,7 +39,6 @@ getAllAdmins() {
       console.log("Error update Admin", e.message);
     }
   }
- }
 
   async hideAdmin(id) {
     try {
@@ -60,6 +56,7 @@ getAllAdmins() {
     } catch (e) {
       console.log(e);
     }
-  } 
+  }
 }
+
 module.exports = AdminCollection;

@@ -1,22 +1,22 @@
 "use strict";
 
 class customerCollection {
- constructor(model) {
-  this.model = model;
- }
- // CRUD methods for the collection go here
- check(req, res, next) {
-  console.log("Customer.check");
-  next();
- }
-
- createCustomer(obj) {
-  try {
-   return this.model.create(obj);
-  } catch (e) {
-   console.log("Error creating new customer", e.message);
+  constructor(model) {
+    this.model = model;
   }
- }
+  // CRUD methods for the collection go here
+  check(req, res, next) {
+    console.log("Customer.check");
+    next();
+  }
+
+  createCustomer(obj) {
+    try {
+      return this.model.create(obj);
+    } catch (e) {
+      console.log("Error creating new customer", e.message);
+    }
+  }
 
   getAllCustomers() {
     try {
@@ -27,8 +27,6 @@ class customerCollection {
       return "Error while getting customers";
     }
   }
- }
-
 
   getCustomer(id) {
     try {
@@ -37,7 +35,6 @@ class customerCollection {
       console.log("Error getting customer", e.message);
     }
   }
- }
 
   async updateCustomer(id, obj) {
     try {
@@ -47,10 +44,8 @@ class customerCollection {
       console.log(e);
     }
   }
- }
 
   async hideCustomer(id) {
-
     try {
       let targetedCustomer = await this.model.findOne({ where: { id } });
       return await targetedCustomer.update({ visibility: false });
@@ -58,17 +53,15 @@ class customerCollection {
       console.log(e);
     }
   }
- }
 
   async suspendCustomer(id) {
     try {
       let targetedCustomer = await this.model.findOne({ where: { id } });
-      return await targetedCustomer.update({ status: "suspended" });// need to edit
+      return await targetedCustomer.update({ status: "suspended" }); // need to edit
     } catch (e) {
       console.log(e);
     }
   }
- }
 }
 
 module.exports = customerCollection;
