@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true
     },
     email: {
       type: DataTypes.STRING,
@@ -50,15 +51,15 @@ module.exports = (sequelize, DataTypes) => {
 
   });
 
- Provider.authenticateToken = (token) => {
-  return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-   if (err) {
-    return err;
-   } else {
-    return decoded;
-   }
-  });
- };
+  Provider.authenticateToken = (token) => {
+    return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        return err;
+      } else {
+        return decoded;
+      }
+    });
+  };
 
- return Provider;
+  return Provider;
 };

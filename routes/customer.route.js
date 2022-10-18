@@ -12,7 +12,6 @@ const { customerAuth } = require("../middlewares/bearer-auth");
 customer.post("/signup", checkCustomer, signup);
 customer.post("/signin", signin);
 customer.get("/customers", customerAuth, getAllCustomers);
-// customer.post("/customer", createNewCustomer);
 
 customer.get("/customer/:id", serverError, customerAuth, getCustomer);
 customer.put("/customer/:id", customerAuth, updateCustomer);
@@ -49,7 +48,7 @@ async function getCustomer(req, res) {
 
 async function updateCustomer(req, res) {
   try {
-    let requestedCustomer = await Customer.update(req.params.id, req.body);
+    let requestedCustomer = await Customer.updateUser(req.params.id, req.body);
     res.status(200).json(requestedCustomer);
   } catch (error) {
     console.log(error);

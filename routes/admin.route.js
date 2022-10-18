@@ -45,7 +45,7 @@ async function getAdminById(req, res) {
 
 async function updateAdmin(req, res) {
   try {
-    let updateAdmin = await Admin.update(req.params.id, req.body);
+    let updateAdmin = await Admin.updateUser(req.params.id, req.body);
     res.status(200).json(updateAdmin);
   } catch (error) {
     console.log(error);
@@ -70,7 +70,7 @@ async function deleteAdmin(req, res) {
 async function suspendAdmin(req, res) {
   try {
     let suspendAdmin = await Admin.suspend(req.params.id);
-    res.status(202).json( suspendAdmin);
+    res.status(202).json(suspendAdmin);
   } catch (error) {
     console.log(error);
     res.status(200).json({
@@ -79,5 +79,5 @@ async function suspendAdmin(req, res) {
   }
 }
 
-console.log("admin.route.js");
+
 module.exports = admin;
