@@ -15,34 +15,67 @@ orders.put("/orderStatus/:id/:condition", updateCondition);
 orders.delete("/order/:id", deleteOrder);
 
 async function createNewOrder(req, res) {
- console.log("createNewOrder");
- const obj = req.body;
- let newOrder = await Order.createOrder(obj);
- res.status(201).json(newOrder);
+  try {
+    const obj = req.body;
+    let newOrder = await Order.create(obj);
+    res.status(201).json(newOrder);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
 async function getAllOrders(req, res) {
- let allOrders = await Order.getAllOrders();
- res.status(200).json(allOrders);
+  try {
+    let allOrders = await Order.getAll();
+    res.status(200).json(allOrders);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
 async function getOrder(req, res) {
- let requestedOrder = await Order.getOrder(req.params.id);
- res.status(200).json(requestedOrder);
+  try {
+    let requestedOrder = await Order.getById(req.params.id);
+    res.status(200).json(requestedOrder);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
 async function updateCondition(req, res) {
- let requestedOrder = await Order.updateOrderCon(
-  req.params.id,
-  req.params.condition
- );
- res.status(200).json(requestedOrder);
+  try {
+    let requestedOrder = await Order.updateOrderStatus(
+      req.params.id,
+      req.params.condition
+    );
+    res.status(200).json(requestedOrder);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
 async function deleteOrder(req, res) {
- let deletedOrder = await Order.hideOrder(req.params.id);
- res.status(202).json(deletedOrder);
+  try {
+    let deletedOrder = await Order.hide(req.params.id);
+    res.status(202).json(deletedOrder);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
 }
 
-console.log("orders.route.js");
 module.exports = orders;

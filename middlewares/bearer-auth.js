@@ -1,6 +1,6 @@
 "use strict";
 
-const { customerModel, AdminModel, ProviderModel } = require("../models/index");
+const { customerModel, adminModel, providerModel } = require("../models/index");
 
 const customerAuth = async (req, res, next) => {
   try {
@@ -30,8 +30,8 @@ const adminAuth = async (req, res, next) => {
       return next("You're not authorized..!!");
     }
     const token = req.headers.authorization.split(" ")[1];
-    const validUser = AdminModel.authenticateToken(token);
-    const adminInfo = await AdminModel.findOne({
+    const validUser = adminModel.authenticateToken(token);
+    const adminInfo = await adminModel.findOne({
       where: { username: validUser.username },
     });
     if (adminInfo) {
@@ -52,8 +52,8 @@ const providerAuth = async (req, res, next) => {
       return next("You're not authorized..!!");
     }
     const token = req.headers.authorization.split(" ")[1];
-    const validUser = ProviderModel.authenticateToken(token);
-    const providerInfo = await ProviderModel.findOne({
+    const validUser = providerModel.authenticateToken(token);
+    const providerInfo = await providerModel.findOne({
       where: { username: validUser.username },
     });
     if (providerInfo) {

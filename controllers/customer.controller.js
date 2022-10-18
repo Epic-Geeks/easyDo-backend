@@ -10,7 +10,7 @@ const signin = async (req, res) => {
   const encodedValue = basicHeader.pop();
   const decodedValue = base64.decode(encodedValue);
   const [username, password] = decodedValue.split(":");
-  const user = await Customer.findOne({ where: { username } });
+  const user = await Customer.findOne({ where: { username, suspend: false } });
   if (user) {
     const isSame = await bcrypt.compare(password, user.password);
     if (isSame) {

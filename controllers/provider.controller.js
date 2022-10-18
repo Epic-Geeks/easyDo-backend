@@ -3,14 +3,14 @@
 const bcrypt = require("bcrypt");
 const base64 = require("base-64");
 
-const Provider = require("../models").ProviderModel;
+const Provider = require("../models").providerModel;
 
 const signin = async (req, res) => {
   const basicHeader = req.headers.authorization.split(" ");
   const encodedValue = basicHeader.pop();
   const decodedValue = base64.decode(encodedValue);
   const [username, password] = decodedValue.split(":");
-  const user = await Provider.findOne({ where: { username } });
+  const user = await Provider.findOne({ where: { username, suspend: false } });
   if (user) {
     const isSame = await bcrypt.compare(password, user.password);
     if (isSame) {

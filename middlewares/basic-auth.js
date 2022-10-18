@@ -1,11 +1,11 @@
 "use strict";
-const Customer = require("../models").customerModel;
-const Provider = require("../models").ProviderModel;
-const { AdminModel } = require("../models");
 
-const saveCustomer = async (req, res, next) => {
+const { customerModel, providerModel, adminModel} = require("../models/index");
+
+
+const checkCustomer = async (req, res, next) => {
   try {
-    const username = await Customer.findOne({
+    const username = await customerModel.findOne({
       where: {
         username: req.body.username,
       },
@@ -15,7 +15,7 @@ const saveCustomer = async (req, res, next) => {
       return res.status(409).send("Username already taken");
     }
 
-    const email = await Customer.findOne({
+    const email = await customerModel.findOne({
       where: {
         email: req.body.email,
       },
@@ -31,9 +31,9 @@ const saveCustomer = async (req, res, next) => {
   }
 };
 
-const saveProvider = async (req, res, next) => {
+const checkProvider = async (req, res, next) => {
   try {
-    const username = await Provider.findOne({
+    const username = await providerModel.findOne({
       where: {
         username: req.body.username,
       },
@@ -43,7 +43,7 @@ const saveProvider = async (req, res, next) => {
       return res.status(409).send("Username already taken");
     }
 
-    const email = await Provider.findOne({
+    const email = await providerModel.findOne({
       where: {
         email: req.body.email,
       },
@@ -52,6 +52,7 @@ const saveProvider = async (req, res, next) => {
     if (email) {
       return res.status(409).send("Email already taken");
     }
+    next();
   } catch (e) {
     console.log(e);
   }
@@ -59,7 +60,7 @@ const saveProvider = async (req, res, next) => {
 
 const checkAdmin = async (req, res, next) => {
   try {
-    const username = await AdminModel.findOne({
+    const username = await adminModel.findOne({
       where: {
         username: req.body.username,
       },
@@ -69,7 +70,7 @@ const checkAdmin = async (req, res, next) => {
       return res.status(409).send("Username already taken");
     }
 
-    const email = await AdminModel.findOne({
+    const email = await adminModel.findOne({
       where: {
         email: req.body.email,
       },
@@ -86,7 +87,7 @@ const checkAdmin = async (req, res, next) => {
 };
 
 module.exports = {
-  saveCustomer,
-  saveProvider,
+  checkCustomer,
+  checkProvider,
   checkAdmin,
 };
