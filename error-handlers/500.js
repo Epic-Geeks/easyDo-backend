@@ -13,8 +13,6 @@ module.exports = async (req, res, next) => {
 
   const requestedItem = await model.findOne({ where: { id: id } });
 
-  console.log("mode", requestedItem);
-
   if (!requestedItem) {
     return res.status(404).send(`${requested} not found`);
   } else {

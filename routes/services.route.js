@@ -1,6 +1,6 @@
 "use strict";
 
-const { Service, providerModel } = require("../models");
+const { Service, providerModel, orderModel } = require("../models");
 
 const express = require("express");
 // eslint-disable-next-line new-cap
@@ -9,18 +9,18 @@ const serverError = require("../error-handlers/500");
 const { uploadService } = require("../upload/servicesImages");
 const { userAuth } = require("../middlewares/bearer-auth");
 
-services.get("/services", getAllServices);
-services.post("/service", uploadService.array('serviceImages', 3), userAuth,  createNewService);
+services.post("/service", uploadService.array('serviceImages', 3),  createNewService);
 
-// uploadService.single('se'),
-
+services.get("/services" ,getAllServices);
 services.get("/service/:id", serverError, getService);
-services.delete("/service/:id", deleteService);
+
 services.put("/service/:id", uploadService.array('serviceImages', 3), updateService);
+
+services.delete("/service/:id", serverError, deleteService);
 
 async function updateService(req, res) {
     try {
-        if ( req.files) {
+        if (req.files) {
             req.body.serviceImages = req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
             }
         const service = await Service.updateService(req.params.id, req.body);
@@ -35,7 +35,7 @@ async function updateService(req, res) {
 
 async function getAllServices(req, res) {
     try {
-        let allServices = await Service.getAllServices(providerModel);
+        let allServices = await Service.getAllServices(providerModel, orderModel);
         res.status(200).json(allServices);
     } catch (error) {
         console.log(error);
@@ -47,8 +47,8 @@ async function getAllServices(req, res) {
 
 async function createNewService(req, res) {
     try {
-        if ( req.files) {
-        req.body.serviceImages = req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
+        if (req.files) {
+        req.body.serviceImages = await req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
         }
         const obj = req.body;
         let newService = await Service.create(obj);
