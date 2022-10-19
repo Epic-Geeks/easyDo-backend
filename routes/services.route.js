@@ -64,7 +64,7 @@ async function createNewService(req, res) {
 
 async function getService(req, res) {
     try {
-        let requestedService = await Service.getService(req.params.id, providerModel);
+        let requestedService = await Service.getService(req.params.id, providerModel, orderModel);
         res.status(200).json(requestedService);
     } catch (error) {
         console.log(error);

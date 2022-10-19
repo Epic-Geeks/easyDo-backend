@@ -30,10 +30,13 @@ const userAuth = async (req, res, next) => {
   }
 };
 
+
 module.exports = {
   userAuth
 };
 
+
+// Path: routes/services.route.js
 
 
 
@@ -57,3 +60,31 @@ module.exports = {
 //     where: { username: validUser.username },
 //   });
 // }
+
+
+
+// const servicesAuth = async (req, res, next) => {
+//   try {
+  
+//     if (!req.headers.authorization) {
+//       return res.status(401).send("You're not authorized..!!");
+//     }
+//     const token = req.headers.authorization.split(" ")[1];
+//     const validUser = providerModel.authenticateToken(token);
+//     const userInfo = await providerModel.findOne({
+//       where: { username: validUser.username },
+//     }) || await adminModel.findOne({
+//       where: { username: validUser.username },
+//     });
+  
+//     if (userInfo) {
+//       req[`${requested}`] = userInfo;
+//       req.token = userInfo.token;
+//       return next();
+//     } else {
+//       return res.status(401).send("You're not authorized..!!");
+//     }
+//   } catch (error) {
+//     return res.status(500).send(error.message || error);
+//   }
+// };
