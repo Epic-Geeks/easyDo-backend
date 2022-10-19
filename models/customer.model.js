@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       isEmail: true,
     },
+    customerPic: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+    },
     suspend: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,

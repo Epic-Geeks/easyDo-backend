@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       // eslint-disable-next-line new-cap
-      type: DataTypes.ENUM("received", "inProgress", "done"),
-      defaultValue: "received"
+      type: DataTypes.ENUM("pending", "inProgress", "done"),
+      defaultValue: "pending"
     },
     customerID: {
       type: DataTypes.INTEGER,

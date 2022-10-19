@@ -1,11 +1,15 @@
 "use strict";
 
-const { customerModel, providerModel, adminModel } = require("../models/index");
+const models = require("../models/index");
 
 
-const checkCustomer = async (req, res, next) => {
+const checkSignup = async (req, res, next) => {
   try {
-    const username = await customerModel.findOne({
+    let reqURL = req.url.toLowerCase();
+    let requested = reqURL.split("/")[1];
+    let model = models[`${requested}Model`];
+
+    const username = await model.findOne({
       where: {
         username: req.body.username,
       },
@@ -15,7 +19,7 @@ const checkCustomer = async (req, res, next) => {
       return res.status(409).send("Username already taken");
     }
 
-    const email = await customerModel.findOne({
+    const email = await model.findOne({
       where: {
         email: req.body.email,
       },
@@ -25,69 +29,13 @@ const checkCustomer = async (req, res, next) => {
       return res.status(409).send("Email already taken");
     }
 
-    next();
+    return next();
   } catch (e) {
     console.log(e);
-  }
-};
-
-const checkProvider = async (req, res, next) => {
-  try {
-    const username = await providerModel.findOne({
-      where: {
-        username: req.body.username,
-      },
-    });
-
-    if (username) {
-      return res.status(409).send("Username already taken");
-    }
-
-    const email = await providerModel.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
-
-    if (email) {
-      return res.status(409).send("Email already taken");
-    }
-    next();
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const checkAdmin = async (req, res, next) => {
-  try {
-    const username = await adminModel.findOne({
-      where: {
-        username: req.body.username,
-      },
-    });
-
-    if (username) {
-      return res.status(409).send("Username already taken");
-    }
-
-    const email = await adminModel.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
-
-    if (email) {
-      return res.status(409).send("Email already taken");
-    }
-
-    next();
-  } catch (e) {
-    console.log(e);
+    return res.status(500).send("Internal Server Error " + e.message || e);
   }
 };
 
 module.exports = {
-  checkCustomer,
-  checkProvider,
-  checkAdmin,
+  checkSignup
 };
