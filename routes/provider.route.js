@@ -14,7 +14,7 @@ const { Provider, serviceModel } = require("../models");
 provider.post("/provider/signup", checkProvider, signup);
 provider.post("/provider/signin", signin);
 provider.get("/providers", providerAuth, getAllProviders);
-provider.post("/provider", createNewProvider);
+
 
 provider.get("/provider/:id", serverError, providerAuth, getProvider);
 provider.put("/provider/:id", providerAuth, updateProvider);
@@ -28,12 +28,12 @@ provider.get("/provider", (req, res) => {
 async function createNewProvider(req, res) {
   try {
     const obj = req.body;
-    let newProvider = await Provider.createProvider(obj);
+    let newProvider = await Provider.create(obj);
     res.status(201).json(newProvider);
   } catch (error) {
-    console.log(error);
+    console.log(error.errors[0].message);
     res.status(200).json({
-      error: error,
+      error: error.errors[0].message,
     });
   }
 }

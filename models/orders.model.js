@@ -16,18 +16,32 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM("received", "inProgress", "done"),
       defaultValue: "received"
     },
-    // customerID: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
-    // providerID: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
-    // serviceID: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
+    customerID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    providerID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    serviceID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    rate: {
+      type: DataTypes.DOUBLE,
+      allowNull: false
+    },
+    rateService: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+      defaultValue: 4.0
+    },
+    rateProvider: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+      defaultValue: 4.0
+    }
   });
   return order;
 };

@@ -9,10 +9,6 @@ const order = require("./orders.model");
 const customer = require("./customer.model");
 const provider = require("./provider.model.js");
 
-const ServicesCollection = require("../collections/servicesCollection");
-
-const ProviderCollection = require("../collections/providerCollection");
-
 const Collection = require("../collections/collections");
 
 const POSTGRES_URL =
@@ -26,8 +22,6 @@ const orderModel = order(sequelize, DataTypes);
 const customerModel = customer(sequelize, DataTypes);
 const providerModel = provider(sequelize, DataTypes);
 
-adminModel.hasMany(serviceModel, { foreignKey: "AdminID", sourceKey: "id" });
-serviceModel.belongsTo(adminModel, { foreignKey: "AdminID", targetKey: "id" });
 
 providerModel.hasMany(serviceModel, {
   foreignKey: "providerID",
@@ -64,9 +58,9 @@ orderModel.belongsTo(serviceModel, {
 
 const orders = new Collection(orderModel);
 const customers = new Collection(customerModel);
-const services = new ServicesCollection(serviceModel);
+const services = new Collection(serviceModel);
 const admins = new Collection(adminModel);
-const providers = new ProviderCollection(providerModel);
+const providers = new Collection(providerModel);
 
 module.exports = {
   db: sequelize,

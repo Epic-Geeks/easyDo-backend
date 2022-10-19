@@ -1,6 +1,6 @@
 "use strict";
 
-const { customerModel, providerModel, adminModel} = require("../models/index");
+const { customerModel, providerModel, adminModel } = require("../models/index");
 
 
 const checkCustomer = async (req, res, next) => {

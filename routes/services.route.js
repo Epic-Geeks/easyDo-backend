@@ -12,31 +12,68 @@ services.post("/service", createNewService);
 
 services.get("/service/:id", serverError, getService);
 services.delete("/service/:id", deleteService);
+services.put("/service/:id", updateService);
 
-services.get("/services", (req, res) => {
- res.send("Hello Services");
-});
+async function updateService(req, res) {
+    try {
+        const service = await Service.updateService(req.params.id, req.body);
+        res.status(200).json(service);
+    } catch (error) {
+        console.log(error);
+        res.status(200).json({
+            error: error
+        });
+    }
+}
 
 async function getAllServices(req, res) {
- let allServices = await Service.getAllServices(providerModel);
- res.status(200).json(allServices);
+    try {
+        let allServices = await Service.getAllServices(providerModel);
+        res.status(200).json(allServices);
+    } catch (error) {
+        console.log(error);
+        res.status(200).json({
+            error: error,
+        });
+    }
 }
 
 async function createNewService(req, res) {
- const obj = req.body;
- let newService = await Service.createService(obj);
- res.status(201).json(newService);
+    try {
+        const obj = req.body;
+        let newService = await Service.create(obj);
+        res.status(201).json(newService);
+    } catch (error) {
+        console.log(error);
+        res.status(200).json({
+            error: error,
+        });
+    }
 }
 
 async function getService(req, res) {
- let requestedService = await Service.getService(req.params.id, providerModel);
- res.status(200).json(requestedService);
+    try {
+        let requestedService = await Service.getService(req.params.id, providerModel);
+        res.status(200).json(requestedService);
+    } catch (error) {
+        console.log(error);
+        res.status(200).json({
+            error: error,
+        });
+    }
 }
 
 async function deleteService(req, res) {
- let deletedService = await Service.hideService(req.params.id, providerModel);
- res.status(202).json(deletedService);
+    try {
+        let deletedService = await Service.hideService(req.params.id, providerModel);
+        res.status(202).json(deletedService);
+    } catch (error) {
+        console.log(error);
+        res.status(200).json({
+            error: error,
+        });
+    }
 }
 
-console.log("services.route.js");
+
 module.exports = services;
