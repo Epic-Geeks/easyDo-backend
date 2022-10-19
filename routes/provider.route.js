@@ -3,23 +3,24 @@
 const express = require("express");
 // eslint-disable-next-line new-cap
 const provider = express.Router();
-const { checkProvider } = require("../middlewares/basic-auth");
-const { signin, signup } = require("../controllers/provider.controller");
+const { checkSignup } = require("../middlewares/basic-auth");
+const { signin, signup } = require("../controllers/controller");
 const serverError = require("../error-handlers/500");
 
-const { providerAuth } = require("../middlewares/bearer-auth");
+const { userAuth } = require("../middlewares/bearer-auth");
 
 const { Provider, serviceModel } = require("../models");
+const { uploadProvider } = require("../upload/providerPic");
 
-provider.post("/provider/signup", checkProvider, signup);
+provider.post("/provider/signup", uploadProvider.array("providerPic", 1), checkSignup, signup);
 provider.post("/provider/signin", signin);
-provider.get("/providers", providerAuth, getAllProviders);
+provider.get("/providers", userAuth, getAllProviders);
 
 
-provider.get("/provider/:id", serverError, providerAuth, getProvider);
-provider.put("/provider/:id", providerAuth, updateProvider);
-provider.delete("/providerHold/:id", providerAuth, holdServices);
-provider.delete("/providerSus/:id", providerAuth, suspendProvider);
+provider.get("/provider/:id", serverError, userAuth, getProvider);
+provider.put("/provider/:id", uploadProvider.array("provider", 1), userAuth, updateProvider);
+provider.delete("/providerHold/:id", userAuth, holdServices);
+provider.delete("/providerSus/:id", userAuth, suspendProvider);
 
 provider.get("/provider", (req, res) => {
   res.send("Hello Provider");
@@ -67,6 +68,11 @@ async function getProvider(req, res) {
 
 async function updateProvider(req, res) {
   try {
+    if (req.files && req.files.length > 0) {
+      req.body.providerPic = req.files.map(
+        (file) => `${process.env.BACKEND_URL}/${file.filename}`
+      );
+    }
     let requestedProvider = await Provider.updateProvider(
       req.params.id,
       req.body,

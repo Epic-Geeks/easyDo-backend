@@ -19,8 +19,8 @@ class Collection {
       const all = this.model.findAll({ where: { visibility: true } });
       return all;
     } catch (e) {
-      console.log("Error while getting all recoreds", e.message || e);
-      return ("Error while getting all recoreds", e.message || e);
+      console.log("Error while getting all records", e.message || e);
+      return ("Error while getting all records", e.message || e);
     }
   }
 
@@ -28,27 +28,24 @@ class Collection {
     try {
       return this.model.findOne({ where: { id } });
     } catch (e) {
-      console.log("Error getting recored..!", e.message || e);
-      return ("Error getting recored..!", e.message || e);
+      console.log("Error getting record..!", e.message || e);
+      return ("Error getting record..!", e.message || e);
     }
   }
 
   async updateUser(id, obj) {
     try {
-      const password = obj.password;
-      const hashPassword = await bycrpt.hash(password, 10);
-      obj.password = hashPassword;
+      obj.password = await bycrpt.hash(obj.password, 10)
       let targeted = await this.model.findOne({ where: { id } });
       return await targeted.update(obj);
     } catch (e) {
-      console.log("Error update recored: " + e.errors[0].message);
-      return ("Error update recored: " + e.errors[0].message);
+      console.log("Error update record: " + e.errors[0].message);
+      return ("Error update record: " + e.errors[0].message);
     }
   }
 
   async updateService(id, obj) {
     try {
-
       const service = await this.model.findOne({ where: { id } });
       return await service.update(obj);
     } catch (e) {

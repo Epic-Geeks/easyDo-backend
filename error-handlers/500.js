@@ -5,7 +5,7 @@ const models = require("../models/index");
 module.exports = async (req, res, next) => {
   const id = req.params.id;
   if (isNaN(+id)) {
-    return res.status(404).send(`${id} is not a valid ID`);
+    return res.status(403).send(`${id} is not a valid ID`);
   }
   let reqURL = req.url.toLowerCase();
   let requested = reqURL.split("/")[1];
@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
   console.log("mode", requestedItem);
 
   if (!requestedItem) {
-    return res.send(`${requested} not found`);
+    return res.status(404).send(`${requested} not found`);
   } else {
     return next();
   }

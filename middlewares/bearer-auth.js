@@ -1,74 +1,33 @@
 "use strict";
 
-const { customerModel, adminModel, providerModel } = require("../models/index");
+const models = require("../models/index");
 
-const customerAuth = async (req, res, next) => {
+const userAuth = async (req, res, next) => {
   try {
+    let reqURL = req.url.toLowerCase();
+    let requested = reqURL.split("/")[1];
+    let model = models[`${requested}Model`];
+
     if (!req.headers.authorization) {
-      return next("You're not authorized..!!");
+      return res.status(401).send("You're not authorized..!!");
     }
     const token = req.headers.authorization.split(" ")[1];
-    const validUser = customerModel.authenticateToken(token);
-    const customerInfo = await customerModel.findOne({
+    const validUser = model.authenticateToken(token);
+    const userInfo = await model.findOne({
       where: { username: validUser.username },
     });
-    if (customerInfo) {
-      req.customer = customerInfo;
-      req.token = customerInfo.token;
+    if (userInfo) {
+      req[`${requested}`] = userInfo;
+      req.token = userInfo.token;
       return next();
     } else {
-      return next("You're not authorized..!!");
+      return res.status(401).send("You're not authorized..!!");
     }
   } catch (error) {
-    return next(error.message || error);
+    return res.status(500).send(error.message || error);
   }
 };
 
-const adminAuth = async (req, res, next) => {
-  try {
-    if (!req.headers.authorization) {
-      return next("You're not authorized..!!");
-    }
-    const token = req.headers.authorization.split(" ")[1];
-    const validUser = adminModel.authenticateToken(token);
-    const adminInfo = await adminModel.findOne({
-      where: { username: validUser.username },
-    });
-    if (adminInfo) {
-      req.admin = adminInfo;
-      req.token = adminInfo.token;
-      return next();
-    } else {
-      return next("You're not authorized..!!");
-    }
-  } catch (error) {
-    return next(error.message || error);
-  }
-};
-
-const providerAuth = async (req, res, next) => {
-  try {
-    if (!req.headers.authorization) {
-      return next("You're not authorized..!!");
-    }
-    const token = req.headers.authorization.split(" ")[1];
-    const validUser = providerModel.authenticateToken(token);
-    const providerInfo = await providerModel.findOne({
-      where: { username: validUser.username },
-    });
-    if (providerInfo) {
-      req.provider = providerInfo;
-      req.token = providerInfo.token;
-      return next();
-    } else {
-      return next("You're not authorized..!!");
-    }
-  } catch (error) {
-    return next(error.message || error);
-  }
-};
 module.exports = {
-  customerAuth,
-  adminAuth,
-  providerAuth,
+  userAuth
 };

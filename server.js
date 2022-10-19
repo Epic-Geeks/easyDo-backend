@@ -9,11 +9,16 @@ const services = require("./routes/services.route");
 const orders = require("./routes/orders.route");
 const notFound = require("./error-handlers/404");
 const serverError = require("./error-handlers/500");
-
+   
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static("images/services"));
+app.use(express.static("images/users"));
+app.use(express.static("images/customers"));
 
 app.use(admin);
 app.use(provider);

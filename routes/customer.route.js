@@ -4,19 +4,20 @@ const express = require("express");
 // eslint-disable-next-line new-cap
 const customer = express.Router();
 const { Customer } = require("../models");
-const { checkCustomer } = require("../middlewares/basic-auth");
-const { signin, signup } = require("../controllers/customer.controller");
+const { checkSignup } = require("../middlewares/basic-auth");
+const { signin, signup } = require("../controllers/controller");
 const serverError = require("../error-handlers/500");
-const { customerAuth } = require("../middlewares/bearer-auth");
+const { userAuth } = require("../middlewares/bearer-auth");
+const { uploadCustomer } = require("../upload/customerPic");
 
-customer.post("/signup", checkCustomer, signup);
-customer.post("/signin", signin);
-customer.get("/customers", customerAuth, getAllCustomers);
+customer.post("/customer/signup", uploadCustomer.array("customerPic", 1) ,checkSignup, signup);
+customer.post("/customer/signin", signin);
+customer.get("/customers", userAuth, getAllCustomers);
 
-customer.get("/customer/:id", serverError, customerAuth, getCustomer);
-customer.put("/customer/:id", customerAuth, updateCustomer);
-customer.delete("/customer/:id", customerAuth, deleteCustomer);
-customer.delete("/suscustomer/:id", customerAuth, suspendCustomer);
+customer.get("/customer/:id", serverError, userAuth, getCustomer);
+customer.put("/customer/:id", uploadCustomer.array("customerPic", 1), userAuth, updateCustomer);
+customer.delete("/customer/:id", userAuth, deleteCustomer);
+customer.delete("/suscustomer/:id", userAuth, suspendCustomer);
 customer.get("/customer", (req, res) => {
   res.send("Hello Customer");
 });
@@ -48,11 +49,14 @@ async function getCustomer(req, res) {
 
 async function updateCustomer(req, res) {
   try {
+    if ( req.files && req.files.length > 0 ) {
+      req.body.customerPic = req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
+    }
     let requestedCustomer = await Customer.updateUser(req.params.id, req.body);
     res.status(200).json(requestedCustomer);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(401).json({
       error: error
     });
   }

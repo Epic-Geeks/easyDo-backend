@@ -4,20 +4,20 @@ const { Admin } = require("../models/index.js");
 const express = require("express");
 // eslint-disable-next-line new-cap
 const admin = express.Router();
-const { checkAdmin } = require("../middlewares/basic-auth");
-const { signup, signin } = require("../controllers/admin.controller.js");
-const { adminAuth } = require("../middlewares/bearer-auth");
+const { checkSignup } = require("../middlewares/basic-auth");
+const { signup, signin } = require("../controllers/controller.js");
+const { userAuth } = require("../middlewares/bearer-auth");
 admin.get("/admin", (req, res) => {
   res.send("Hello Admin");
 });
 
-admin.post("/admin/signup", checkAdmin, signup);
+admin.post("/admin/signup", checkSignup, signup);
 admin.post("/admin/signin", signin);
-admin.get("/admins", adminAuth, getAllAdmins);
-admin.get("/admin/:id", adminAuth, getAdminById);
-admin.put("/admin/:id", adminAuth, updateAdmin);
-admin.delete("/admin/:id", adminAuth, deleteAdmin);
-admin.delete("/suspendadmin/:id", adminAuth, suspendAdmin);
+admin.get("/admins", userAuth, getAllAdmins);
+admin.get("/admin/:id", userAuth, getAdminById);
+admin.put("/admin/:id", userAuth, updateAdmin);
+admin.delete("/admin/:id", userAuth, deleteAdmin);
+admin.delete("/suspendadmin/:id", userAuth, suspendAdmin);
 
 async function getAllAdmins(req, res) {
   try {

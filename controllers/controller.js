@@ -3,15 +3,21 @@
 const bcrypt = require("bcrypt");
 const base64 = require("base-64");
 
-const Provider = require("../models").providerModel;
+const models = require("../models");
 
 const signin = async (req, res) => {
   try {
+    let reqURL = req.url.toLowerCase();
+    let requested = reqURL.split("/")[1];
+    let model = models[`${requested}Model`];
+
     const basicHeader = req.headers.authorization.split(" ");
     const encodedValue = basicHeader.pop();
     const decodedValue = base64.decode(encodedValue);
     const [username, password] = decodedValue.split(":");
-    const user = await Provider.findOne({ where: { username, suspend: false } });
+    const user = await model.findOne({
+      where: { username, suspend: false },
+    });
     if (user) {
       const isSame = await bcrypt.compare(password, user.password);
       if (isSame) {
@@ -30,38 +36,36 @@ const signin = async (req, res) => {
       return res.status(401).send("You are not authorized");
     }
   } catch (error) {
-    console.log("Error update recored", e.message || e);
-    return ("Error update recored", e.message || e);
+    console.log("Error update record", e.message || e);
+    return "Error update record", e.message || e;
   }
-
 };
 
 const signup = async (req, res) => {
-
+  
   try {
-    const { username, email, password } = req.body;
-    const output = {
-      username,
-      email,
-      password: await bcrypt.hash(password, 10),
-    };
-    const user = await Provider.create(output);
+    
+        let reqURL = req.url.toLowerCase();
+        let requested = reqURL.split("/")[1];
+        let model = models[`${requested}Model`];
+        req.body.password = await bcrypt.hash(req.body.password, 10);
+    if (req.files) {
+      req.body[`${requested}Pic`] = await req.files.map(
+        (file) => `${process.env.BACKEND_URL}/${file.filename}`
+      );
+    }
+
+    const user = await model.create(req.body);
     if (user) {
-      res.status(201).json({
-        user: {
-          username: user.username,
-          email: user.email,
-        },
-        token: user.token,
-      });
+      res.status(201).json(user);
     } else {
       res.status(403).send("Invalid Signup");
     }
   } catch (e) {
-    console.log("Error update recored: " + e.errors[0].message);
-    return ("Error update recored: " + e.errors[0].message);
+    console.log("Error update record: " + e.errors[0].message);
+    return "Error update record: " + e.errors[0].message;
   }
-
 };
 
 module.exports = { signup, signin };
+
