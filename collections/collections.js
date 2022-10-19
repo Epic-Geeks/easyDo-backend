@@ -86,6 +86,9 @@ class Collection {
   async updateOrderStatus(id, status) {
     try {
       let targetedOrder = await this.model.findOne({ where: { id } });
+      if (!targetedOrder) {
+        return "Order not found";
+      }
       return await targetedOrder.update({ status: status });
     } catch (e) {
       console.log("Error while update order status", e.message || e);
@@ -106,9 +109,9 @@ class Collection {
     }
   }
 
-  getService(id, Provider) {
+  getService(id, Provider, Order) {
     try {
-      return this.model.findOne({ where: { id }, include: [Provider] });
+      return this.model.findOne({ where: { id }, include: [Provider, Order] });
     } catch (e) {
       console.log("Error getting service", e.message || e);
       return ("Error getting service", e.message || e);
