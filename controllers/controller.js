@@ -21,14 +21,7 @@ const signin = async (req, res) => {
     if (user) {
       const isSame = await bcrypt.compare(password, user.password);
       if (isSame) {
-        return res.status(200).json({
-          user: {
-            username: user.username,
-            email: user.email,
-            services: user.services,
-          },
-          token: user.token,
-        });
+        return res.status(200).json(user);
       } else {
         return res.status(401).send("You are not authorized");
       }

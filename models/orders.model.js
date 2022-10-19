@@ -28,18 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    rate: {
-      type: DataTypes.DOUBLE,
-      allowNull: false
-    },
     rateService: {
       type: DataTypes.DOUBLE,
-      allowNull: false,
-      defaultValue: 4.0
-    },
-    rateProvider: {
-      type: DataTypes.DOUBLE,
-      allowNull: false,
       defaultValue: 4.0
     }
   });

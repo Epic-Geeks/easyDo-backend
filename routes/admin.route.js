@@ -1,6 +1,6 @@
 "use strict";
 
-const { Admin } = require("../models/index.js");
+const { Admin, Customer, Provider, serviceModel } = require("../models/index.js");
 const express = require("express");
 // eslint-disable-next-line new-cap
 const admin = express.Router();
@@ -13,11 +13,24 @@ admin.get("/admin", (req, res) => {
 
 admin.post("/admin/signup", checkSignup, signup);
 admin.post("/admin/signin", signin);
-admin.get("/admins", userAuth, getAllAdmins);
+
+admin.get("/admin", userAuth, getAllAdmins);
 admin.get("/admin/:id", userAuth, getAdminById);
+
 admin.put("/admin/:id", userAuth, updateAdmin);
+
 admin.delete("/admin/:id", userAuth, deleteAdmin);
-admin.delete("/suspendadmin/:id", userAuth, suspendAdmin);
+admin.delete("/suspendAdmin/:id", userAuth, suspendAdmin);
+
+// provider control routes
+admin.get("/customer",  userAuth, getAllCustomers);
+admin.delete("/susCustomer/:id", userAuth, suspendCustomer);
+
+// provider control routes
+admin.get("/provider", userAuth, getAllProviders);
+admin.delete("/providerSus/:id", userAuth, suspendProvider);
+
+
 
 async function getAllAdmins(req, res) {
   try {
@@ -75,6 +88,66 @@ async function suspendAdmin(req, res) {
     console.log(error);
     res.status(200).json({
       error: error
+    });
+  }
+}
+
+
+
+// customer control functions
+
+async function getAllCustomers(req, res) {
+  try {
+    let allCustomers = await Customer.getAll();
+    return res.status(200).json(allCustomers);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error
+    });
+  }
+}
+
+
+
+async function suspendCustomer(req, res) {
+  try {
+    let suspendCustomer = await Customer.suspend(req.params.id);
+    res.status(202).json(suspendCustomer);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error
+    });
+  }
+}
+
+// provider control functions
+
+async function getAllProviders(req, res) {
+  try {
+    let allProviders = await Provider.getAllProviders(serviceModel);
+    res.status(200).json(allProviders);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
+    });
+  }
+}
+
+
+async function suspendProvider(req, res) {
+  try {
+    let deletedProvider = await Provider.suspendProvider(
+      req.params.id,
+      serviceModel
+    );
+    res.status(202).json(deletedProvider);
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({
+      error: error,
     });
   }
 }

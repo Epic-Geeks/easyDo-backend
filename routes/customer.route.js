@@ -3,7 +3,7 @@
 const express = require("express");
 // eslint-disable-next-line new-cap
 const customer = express.Router();
-const { Customer } = require("../models");
+const { Customer, orderModel } = require("../models");
 const { checkSignup } = require("../middlewares/basic-auth");
 const { signin, signup } = require("../controllers/controller");
 const serverError = require("../error-handlers/500");
@@ -12,32 +12,16 @@ const { uploadCustomer } = require("../upload/customerPic");
 
 customer.post("/customer/signup", uploadCustomer.array("customerPic", 1) ,checkSignup, signup);
 customer.post("/customer/signin", signin);
-customer.get("/customers", userAuth, getAllCustomers);
 
 customer.get("/customer/:id", serverError, userAuth, getCustomer);
+
 customer.put("/customer/:id", uploadCustomer.array("customerPic", 1), userAuth, updateCustomer);
+
 customer.delete("/customer/:id", userAuth, deleteCustomer);
-customer.delete("/suscustomer/:id", userAuth, suspendCustomer);
-customer.get("/customer", (req, res) => {
-  res.send("Hello Customer");
-});
-
-
-async function getAllCustomers(req, res) {
-  try {
-    let allCustomers = await Customer.getAll();
-    res.status(200).json(allCustomers);
-  } catch (error) {
-    console.log(error);
-    res.status(200).json({
-      error: error
-    });
-  }
-}
 
 async function getCustomer(req, res) {
   try {
-    let requestedCustomer = await Customer.getById(req.params.id);
+    let requestedCustomer = await Customer.getCustomerById(req.params.id, orderModel);
     res.status(200).json(requestedCustomer);
   } catch (error) {
     console.log(error);
@@ -74,17 +58,6 @@ async function deleteCustomer(req, res) {
   }
 }
 
-async function suspendCustomer(req, res) {
-  try {
-    let suspendCustomer = await Customer.suspend(req.params.id);
-    res.status(202).json(suspendCustomer);
-  } catch (error) {
-    console.log(error);
-    res.status(200).json({
-      error: error
-    });
-  }
-}
 
 module.exports = customer;
 

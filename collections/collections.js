@@ -14,9 +14,9 @@ class Collection {
     }
   }
 
-  getAll() {
+  async getAll() {
     try {
-      const all = this.model.findAll({ where: { visibility: true } });
+      const all = await this.model.findAll({ where: { visibility: true } });
       return all;
     } catch (e) {
       console.log("Error while getting all records", e.message || e);
@@ -24,9 +24,18 @@ class Collection {
     }
   }
 
-  getById(id) {
+  async getById(id) {
     try {
-      return this.model.findOne({ where: { id } });
+      return await this.model.findOne({ where: { id }});
+    } catch (e) {
+      console.log("Error getting record..!", e.message || e);
+      return ("Error getting record..!", e.message || e);
+    }
+  }
+
+  async getCustomerById(id, Model) {
+    try {
+      return await this.model.findOne({ where: { id }, include: [Model] });
     } catch (e) {
       console.log("Error getting record..!", e.message || e);
       return ("Error getting record..!", e.message || e);
@@ -84,11 +93,11 @@ class Collection {
     }
   }
   // exclusive for Service
-  getAllServices(Provider) {
+  getAllServices(Provider, Order) {
     try {
       const allServices = this.model.findAll({
         where: { visibility: true },
-        include: [Provider],
+        include: [Provider, Order],
       });
       return allServices;
     } catch (e) {
@@ -120,9 +129,9 @@ class Collection {
   }
 
   // exclusive for provider
-  getAllProviders(Services) {
+  async getAllProviders(Services) {
     try {
-      const allProviders = this.model.findAll({
+      const allProviders = await this.model.findAll({
         where: { visibility: true },
         include: [Services],
       });
@@ -133,9 +142,9 @@ class Collection {
     }
   }
 
-  getProvider(id, Services) {
+  getProvider(id, Services, Order) {
     try {
-      return this.model.findOne({ where: { id }, include: [Services] });
+      return this.model.findOne({ where: { id }, include: [Services, Order] });
     } catch (e) {
       console.log("Error getting provider", e.message || e);
       return ("Error getting provider", e.message || e);
