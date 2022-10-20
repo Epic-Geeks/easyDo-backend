@@ -6,23 +6,24 @@ const express = require("express");
 // eslint-disable-next-line new-cap
 const services = express.Router();
 const serverError = require("../error-handlers/500");
-const { userAuth } = require("../middlewares/bearer-auth");
+const { userAuth, serviceAuth } = require("../middlewares/bearer-auth");
 const { imgUpload } = require("../upload/imagesUplaod");
+const { checkProviderRole, checkServiceOwner } = require("../middlewares/ACL");
 
-services.post("/service", imgUpload.array('serviceImages', 3),  createNewService);
+services.post("/service", imgUpload.array('serviceImages', 3), serviceAuth, checkProviderRole, createNewService);
 
-services.get("/services" ,getAllServices);
+services.get("/services", getAllServices);
 services.get("/service/:id", serverError, getService);
 
-services.put("/service/:id", imgUpload.array('serviceImages', 3), updateService);
+services.put("/service/:id", imgUpload.array('serviceImages', 3), serviceAuth, checkServiceOwner, updateService);
 
-services.delete("/service/:id", serverError, deleteService);
+services.delete("/service/:id", serverError, serviceAuth, checkServiceOwner, deleteService);
 
 async function updateService(req, res) {
     try {
         if (req.files) {
             req.body.serviceImages = req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
-            }
+        }
         const service = await Service.updateService(req.params.id, req.body);
         res.status(200).json(service);
     } catch (error) {
@@ -48,7 +49,7 @@ async function getAllServices(req, res) {
 async function createNewService(req, res) {
     try {
         if (req.files) {
-        req.body.serviceImages = await req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
+            req.body.serviceImages = await req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
         }
         const obj = req.body;
         let newService = await Service.create(obj);
