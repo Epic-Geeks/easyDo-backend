@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     },
+    // customerAddress: {
+    //   type: DataTypes.ARRAY(DataTypes.STRING),
+    //   allowNull: true,
+    // },
     suspend: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
