@@ -21,7 +21,7 @@ async function createNewOrder(req, res) {
     res.status(201).json(newOrder);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(401).json({
       error: error,
     });
   }
@@ -33,7 +33,7 @@ async function getAllOrders(req, res) {
     res.status(200).json(allOrders);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error,
     });
   }
@@ -45,7 +45,7 @@ async function getOrder(req, res) {
     res.status(200).json(requestedOrder);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error,
     });
   }
@@ -60,7 +60,7 @@ async function updateCondition(req, res) {
     res.status(200).json(requestedOrder);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error,
     });
   }
@@ -72,7 +72,7 @@ async function deleteOrder(req, res) {
     res.status(202).json(deletedOrder);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error,
     });
   }

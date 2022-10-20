@@ -5,7 +5,13 @@ const path = require("path");
 const uuid = require("uuid").v4;
 
 const storage = multer.diskStorage({
-  destination: "images/customers/",
+  destination: function (req, file, cb) {
+    let reqURL = req.url.toLowerCase();
+    let requested = reqURL.split("/")[1];
+   
+    cb(null,`images/${requested}s`);
+  },
+  // destination: "images/customers/",
   filename: async (req, file, callBack) => {
    const newData = await req.body
     callBack(
@@ -17,10 +23,10 @@ const storage = multer.diskStorage({
   },
 });
 
-const uploadCustomer = multer({
+const imgUpload = multer({
   storage: storage,
 });
 
 module.exports = {
-  uploadCustomer,
+  imgUpload,
 };

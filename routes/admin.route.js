@@ -38,7 +38,7 @@ async function getAllAdmins(req, res) {
     res.status(200).json(allAdmin);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error
     });
   }
@@ -50,7 +50,7 @@ async function getAdminById(req, res) {
     res.status(200).json(AdminById);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error
     });
   }
@@ -62,7 +62,7 @@ async function updateAdmin(req, res) {
     res.status(200).json(updateAdmin);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error
     });
   }
@@ -74,7 +74,7 @@ async function deleteAdmin(req, res) {
     res.status(202).json(deletedAdmin);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error
     });
   }
@@ -86,7 +86,7 @@ async function suspendAdmin(req, res) {
     res.status(202).json(suspendAdmin);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error
     });
   }
@@ -102,7 +102,7 @@ async function getAllCustomers(req, res) {
     return res.status(200).json(allCustomers);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error
     });
   }
@@ -116,7 +116,7 @@ async function suspendCustomer(req, res) {
     res.status(202).json(suspendCustomer);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error
     });
   }
@@ -130,7 +130,7 @@ async function getAllProviders(req, res) {
     res.status(200).json(allProviders);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error,
     });
   }
@@ -146,7 +146,7 @@ async function suspendProvider(req, res) {
     res.status(202).json(deletedProvider);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error,
     });
   }

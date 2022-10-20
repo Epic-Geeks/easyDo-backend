@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     serviceCategory: {
-      type: DataTypes.ENUM("plumber", "electrician", "carpenter", "painter"),
+      type: DataTypes.ENUM("plumber", "electrician", "carpenter", "painter", "online"),
       allowNull: false,
     },
     visibility: {

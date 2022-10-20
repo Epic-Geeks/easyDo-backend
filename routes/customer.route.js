@@ -8,14 +8,14 @@ const { checkSignup } = require("../middlewares/basic-auth");
 const { signin, signup } = require("../controllers/controller");
 const serverError = require("../error-handlers/500");
 const { userAuth } = require("../middlewares/bearer-auth");
-const { uploadCustomer } = require("../upload/customerPic");
+const {  imgUpload } = require("../upload/imagesUplaod");
 
-customer.post("/customer/signup", uploadCustomer.array("customerPic", 1) ,checkSignup, signup);
+customer.post("/customer/signup", imgUpload.array("customerPic", 1) ,checkSignup, signup);
 customer.post("/customer/signin", signin);
 
 customer.get("/customer/:id", serverError, userAuth, getCustomer);
 
-customer.put("/customer/:id", uploadCustomer.array("customerPic", 1), userAuth, updateCustomer);
+customer.put("/customer/:id", imgUpload.array("customerPic", 1), userAuth, updateCustomer);
 
 customer.delete("/customer/:id", userAuth, deleteCustomer);
 
@@ -25,7 +25,7 @@ async function getCustomer(req, res) {
     res.status(200).json(requestedCustomer);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error
     });
   }
@@ -52,7 +52,7 @@ async function deleteCustomer(req, res) {
     res.status(202).json(deletedCustomer);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(401).json({
       error: error
     });
   }

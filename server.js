@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static("images/services"));
-app.use(express.static("images/users"));
+app.use(express.static("images/providers"));
 app.use(express.static("images/customers"));
 
 app.use(admin);

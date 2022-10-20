@@ -6,15 +6,15 @@ const express = require("express");
 // eslint-disable-next-line new-cap
 const services = express.Router();
 const serverError = require("../error-handlers/500");
-const { uploadService } = require("../upload/servicesImages");
 const { userAuth } = require("../middlewares/bearer-auth");
+const { imgUpload } = require("../upload/imagesUplaod");
 
-services.post("/service", uploadService.array('serviceImages', 3),  createNewService);
+services.post("/service", imgUpload.array('serviceImages', 3),  createNewService);
 
 services.get("/services" ,getAllServices);
 services.get("/service/:id", serverError, getService);
 
-services.put("/service/:id", uploadService.array('serviceImages', 3), updateService);
+services.put("/service/:id", imgUpload.array('serviceImages', 3), updateService);
 
 services.delete("/service/:id", serverError, deleteService);
 
@@ -27,7 +27,7 @@ async function updateService(req, res) {
         res.status(200).json(service);
     } catch (error) {
         console.log(error);
-        res.status(200).json({
+        res.status(401).json({
             error: error
         });
     }
@@ -39,7 +39,7 @@ async function getAllServices(req, res) {
         res.status(200).json(allServices);
     } catch (error) {
         console.log(error);
-        res.status(200).json({
+        res.status(500).json({
             error: error,
         });
     }
@@ -56,7 +56,7 @@ async function createNewService(req, res) {
         res.status(201).json(newService);
     } catch (error) {
         console.log(error);
-        res.status(200).json({
+        res.status(500).json({
             error: error,
         });
     }
@@ -68,7 +68,7 @@ async function getService(req, res) {
         res.status(200).json(requestedService);
     } catch (error) {
         console.log(error);
-        res.status(200).json({
+        res.status(500).json({
             error: error,
         });
     }
@@ -80,7 +80,7 @@ async function deleteService(req, res) {
         res.status(202).json(deletedService);
     } catch (error) {
         console.log(error);
-        res.status(200).json({
+        res.status(500).json({
             error: error,
         });
     }

@@ -10,14 +10,14 @@ const serverError = require("../error-handlers/500");
 const { userAuth } = require("../middlewares/bearer-auth");
 
 const { Provider, serviceModel, orderModel } = require("../models");
-const { uploadProvider } = require("../upload/providerPic");
+const { imgUpload } = require("../upload/imagesUplaod");
 
-provider.post("/provider/signup", uploadProvider.array("providerPic", 1), checkSignup, signup);
+provider.post("/provider/signup", imgUpload.array("providerPic", 1), checkSignup, signup);
 provider.post("/provider/signin", signin);
 
 provider.get("/provider/:id", serverError, userAuth, getProvider);
 
-provider.put("/provider/:id", uploadProvider.array("provider", 1), userAuth, updateProvider);
+provider.put("/provider/:id", imgUpload.array("provider", 1), userAuth, updateProvider);
 
 provider.delete("/provider/:id", userAuth, holdServices);
 
@@ -32,7 +32,7 @@ async function getProvider(req, res) {
     res.status(200).json(requestedProvider);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(500).json({
       error: error,
     });
   }
@@ -53,7 +53,7 @@ async function updateProvider(req, res) {
     res.status(200).json(requestedProvider);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(401).json({
       error: error,
     });
   }
@@ -68,7 +68,7 @@ async function holdServices(req, res) {
     res.status(202).json(deletedProvider);
   } catch (error) {
     console.log(error);
-    res.status(200).json({
+    res.status(401).json({
       error: error,
     });
   }

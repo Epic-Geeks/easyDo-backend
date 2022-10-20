@@ -21,6 +21,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     },
+    // providerCoveredCities: {
+    //   type: DataTypes.ARRAY(DataTypes.STRING),
+    //   allowNull: true,
+    // },
+    // five orders per day:
+    // availableTimes: {
+    //   type: DataTypes.ARRAY(DataTypes.STRING),
+    //   allowNull: false,
+    // },
     suspend: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
