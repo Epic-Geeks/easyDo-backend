@@ -8,14 +8,15 @@ const { checkSignup } = require("../middlewares/basic-auth");
 const { signin, signup } = require("../controllers/controller");
 const serverError = require("../error-handlers/500");
 const { userAuth } = require("../middlewares/bearer-auth");
-const {  imgUpload } = require("../upload/imagesUplaod");
+const { imgUpload } = require("../upload/imagesUplaod");
+const { checkIsSameCustomer } = require("../middlewares/ACL");
 
-customer.post("/customer/signup", imgUpload.array("customerPic", 1) ,checkSignup, signup);
+customer.post("/customer/signup", imgUpload.array("customerPic", 1), checkSignup, signup);
 customer.post("/customer/signin", signin);
 
 customer.get("/customer/:id", serverError, userAuth, getCustomer);
 
-customer.put("/customer/:id", imgUpload.array("customerPic", 1), userAuth, updateCustomer);
+customer.put("/customer/:id", imgUpload.array("customerPic", 1), userAuth, checkIsSameCustomer, updateCustomer);
 
 customer.delete("/customer/:id", userAuth, deleteCustomer);
 
@@ -33,7 +34,7 @@ async function getCustomer(req, res) {
 
 async function updateCustomer(req, res) {
   try {
-    if ( req.files && req.files.length > 0 ) {
+    if (req.files && req.files.length > 0) {
       req.body.customerPic = req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
     }
     let requestedCustomer = await Customer.updateUser(req.params.id, req.body);

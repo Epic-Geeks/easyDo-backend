@@ -11,15 +11,16 @@ const { userAuth } = require("../middlewares/bearer-auth");
 
 const { Provider, serviceModel, orderModel } = require("../models");
 const { imgUpload } = require("../upload/imagesUplaod");
+const { checkIsSameProvider } = require("../middlewares/ACL");
 
 provider.post("/provider/signup", imgUpload.array("providerPic", 1), checkSignup, signup);
 provider.post("/provider/signin", signin);
 
 provider.get("/provider/:id", serverError, userAuth, getProvider);
 
-provider.put("/provider/:id", imgUpload.array("provider", 1), userAuth, updateProvider);
+provider.put("/provider/:id", imgUpload.array("provider", 1), userAuth, checkIsSameProvider, updateProvider);
 
-provider.delete("/provider/:id", userAuth, holdServices);
+provider.delete("/provider/:id", userAuth, checkIsSameProvider, holdServices);
 
 
 async function getProvider(req, res) {

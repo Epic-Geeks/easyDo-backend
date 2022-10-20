@@ -1,5 +1,6 @@
 "use strict";
 
+const { customerModel, providerModel } = require("../models/index");
 const models = require("../models/index");
 
 const userAuth = async (req, res, next) => {
@@ -19,7 +20,56 @@ const userAuth = async (req, res, next) => {
       where: { username: validUser.username },
     });
     if (userInfo) {
-      req[`${requested}`] = userInfo;
+      req.userInfo = userInfo;
+      req.token = userInfo.token;
+      return next();
+    } else {
+      return res.status(401).send("You're not authorized..!!");
+    }
+  } catch (error) {
+    return res.status(500).send(error.message || error);
+  }
+};
+
+const orderAuth = async (req, res, next) => {
+  try {
+
+    if (!req.headers.authorization) {
+      return res.status(401).send("You're not authorized..!!");
+    }
+    const token = req.headers.authorization.split(" ")[1];
+    const validUser = customerModel.authenticateToken(token);
+    console.log(validUser);
+    const userInfo = await customerModel.findOne({
+      where: { username: validUser.username },
+    });
+    if (userInfo) {
+      req.userInfo = userInfo;
+      req.token = userInfo.token;
+      return next();
+    } else {
+      return res.status(401).send("You're not authorized..!!");
+    }
+  } catch (error) {
+    return res.status(500).send(error.message || error);
+  }
+};
+
+
+const serviceAuth = async (req, res, next) => {
+  try {
+
+    if (!req.headers.authorization) {
+      return res.status(401).send("You're not authorized..!!");
+    }
+    const token = req.headers.authorization.split(" ")[1];
+    const validUser = providerModel.authenticateToken(token);
+    console.log(validUser);
+    const userInfo = await providerModel.findOne({
+      where: { username: validUser.username },
+    });
+    if (userInfo) {
+      req.userInfo = userInfo;
       req.token = userInfo.token;
       return next();
     } else {
@@ -32,7 +82,9 @@ const userAuth = async (req, res, next) => {
 
 
 module.exports = {
-  userAuth
+  userAuth,
+  orderAuth,
+  serviceAuth
 };
 
 
