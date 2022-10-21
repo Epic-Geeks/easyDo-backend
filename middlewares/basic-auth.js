@@ -1,29 +1,46 @@
 "use strict";
 
-const models = require("../models/index");
-
+const { customerModel, providerModel, adminModel } = require("../models/index");
 
 const checkSignup = async (req, res, next) => {
   try {
-    let reqURL = req.url.toLowerCase();
-    let requested = reqURL.split("/")[1];
-    let model = models[`${requested}Model`];
-
-    const username = await model.findOne({
-      where: {
-        username: req.body.username,
-      },
-    });
+    const username =
+      (await customerModel.findOne({
+        where: {
+          username: req.body.username,
+        },
+      })) ||
+      (await providerModel.findOne({
+        where: {
+          username: req.body.username,
+        },
+      })) ||
+      (await adminModel.findOne({
+        where: {
+          username: req.body.username,
+        },
+      }));
 
     if (username) {
       return res.status(409).send("Username already taken");
     }
 
-    const email = await model.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
+    const email =
+      (await customerModel.findOne({
+        where: {
+          email: req.body.email,
+        },
+      })) ||
+      (await providerModel.findOne({
+        where: {
+          email: req.body.email,
+        },
+      })) ||
+      (await adminModel.findOne({
+        where: {
+          email: req.body.email,
+        },
+      }));
 
     if (email) {
       return res.status(409).send("Email already taken");
@@ -32,10 +49,10 @@ const checkSignup = async (req, res, next) => {
     return next();
   } catch (e) {
     console.log(e);
-    return res.status(500).send("Internal Server Error " + e.message || e);
+    return res.status(500).send("Internal Server Error " + e?.message || e);
   }
 };
 
 module.exports = {
-  checkSignup
+  checkSignup,
 };

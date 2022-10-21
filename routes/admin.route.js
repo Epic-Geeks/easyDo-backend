@@ -7,6 +7,7 @@ const admin = express.Router();
 const { checkSignup } = require("../middlewares/basic-auth");
 const { signup, signin } = require("../controllers/controller.js");
 const { userAuth } = require("../middlewares/bearer-auth");
+const { ACL } = require("../middlewares/ACL.js");
 admin.get("/admin", (req, res) => {
   res.send("Hello Admin");
 });
@@ -23,12 +24,12 @@ admin.delete("/admin/:id", userAuth, deleteAdmin);
 admin.delete("/suspendAdmin/:id", userAuth, suspendAdmin);
 
 // provider control routes
-admin.get("/customer",  userAuth, getAllCustomers);
-admin.delete("/susCustomer/:id", userAuth, suspendCustomer);
+admin.get("/customer",  userAuth, ACL, getAllCustomers);
+admin.delete("/susCustomer/:id", userAuth, ACL, suspendCustomer);
 
 // provider control routes
-admin.get("/provider", userAuth, getAllProviders);
-admin.delete("/providerSus/:id", userAuth, suspendProvider);
+admin.get("/provider", userAuth, ACL, getAllProviders);
+admin.delete("/providerSus/:id", userAuth, ACL, suspendProvider);
 
 
 
