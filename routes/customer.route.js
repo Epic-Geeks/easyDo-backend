@@ -9,16 +9,16 @@ const { signin, signup } = require("../controllers/controller");
 const serverError = require("../error-handlers/500");
 const { userAuth } = require("../middlewares/bearer-auth");
 const { imgUpload } = require("../upload/imagesUplaod");
-const { checkIsSameCustomer } = require("../middlewares/ACL");
+const {  ACL } = require("../middlewares/ACL");
 
 customer.post("/customer/signup", imgUpload.array("customerPic", 1), checkSignup, signup);
 customer.post("/customer/signin", signin);
 
 customer.get("/customer/:id", serverError, userAuth, getCustomer);
 
-customer.put("/customer/:id", imgUpload.array("customerPic", 1), userAuth, checkIsSameCustomer, updateCustomer);
+customer.put("/customer/:id", imgUpload.array("customerPic", 1), userAuth, ACL, updateCustomer);
 
-customer.delete("/customer/:id", userAuth, deleteCustomer);
+customer.delete("/customer/:id", userAuth, ACL, deleteCustomer);
 
 async function getCustomer(req, res) {
   try {

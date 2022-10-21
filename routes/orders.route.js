@@ -5,10 +5,10 @@ const { Order } = require("../models");
 // eslint-disable-next-line new-cap
 const orders = express.Router();
 const serverError = require("../error-handlers/500");
-const { checkCustomerRole } = require("../middlewares/ACL");
+const { ACL } = require("../middlewares/ACL");
 const { userAuth, orderAuth } = require("../middlewares/bearer-auth")
 orders.get("/orders", getAllOrders);
-orders.post("/order", orderAuth, checkCustomerRole, createNewOrder);
+orders.post("/order", orderAuth, ACL, createNewOrder);
 
 orders.get("/order/:id", serverError, getOrder);
 orders.put("/orderStatus/:id/:condition", updateCondition);

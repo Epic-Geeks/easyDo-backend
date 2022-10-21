@@ -8,16 +8,16 @@ const services = express.Router();
 const serverError = require("../error-handlers/500");
 const { userAuth, serviceAuth } = require("../middlewares/bearer-auth");
 const { imgUpload } = require("../upload/imagesUplaod");
-const { checkProviderRole, checkServiceOwner } = require("../middlewares/ACL");
+const { ACL } = require("../middlewares/ACL");
 
-services.post("/service", imgUpload.array('serviceImages', 3), serviceAuth, checkProviderRole, createNewService);
+services.post("/service", imgUpload.array('serviceImages', 3), serviceAuth, ACL, createNewService);
 
 services.get("/services", getAllServices);
 services.get("/service/:id", serverError, getService);
 
-services.put("/service/:id", imgUpload.array('serviceImages', 3), serviceAuth, checkServiceOwner, updateService);
+services.put("/service/:id", imgUpload.array('serviceImages', 3), serviceAuth, ACL, updateService);
 
-services.delete("/service/:id", serverError, serviceAuth, checkServiceOwner, deleteService);
+services.delete("/service/:id", serverError, serviceAuth, ACL, deleteService);
 
 async function updateService(req, res) {
     try {
