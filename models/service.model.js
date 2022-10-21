@@ -6,13 +6,21 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    price : {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+    },
+    serviceImages: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+    },
     serviceCategory: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM("plumber", "electrician", "carpenter", "painter", "online"),
       allowNull: false,
     },
     visibility: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true
+      defaultValue: true,
     },
     providerID: {
       type: DataTypes.INTEGER,

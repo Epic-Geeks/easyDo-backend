@@ -1,11 +1,9 @@
 "use strict";
-
 const jwt = require("jsonwebtoken");
-
 /* istanbul ignore next */
 module.exports = (sequelize, DataTypes) => {
 
-  const Provider = sequelize.define("ProvidersRoles", {
+  const Admin = sequelize.define("AdminRoles", {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -17,30 +15,23 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       isEmail: true,
     },
-    providerPic: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: true,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    // providerCoveredCities: {
-    //   type: DataTypes.ARRAY(DataTypes.STRING),
-    //   allowNull: true,
-    // },
-    // five orders per day:
-    // availableTimes: {
-    //   type: DataTypes.ARRAY(DataTypes.STRING),
-    //   allowNull: false,
-    // },
+    visibility: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    },
     suspend: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    visibility: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    role: {
+      // eslint-disable-next-line new-cap
+      type: DataTypes.ENUM("admin"),
+      defaultValue: "admin",
     },
     token: {
       type: DataTypes.VIRTUAL,
@@ -56,15 +47,8 @@ module.exports = (sequelize, DataTypes) => {
         return jwt.sign(tokenObj, process.env.JWT_SECRET);
       },
     },
-    role: {
-      // eslint-disable-next-line new-cap
-      type: DataTypes.ENUM("provider"),
-      defaultValue: "provider",
-    },
-
   });
-
-  Provider.authenticateToken = (token) => {
+  Admin.authenticateToken = (token) => {
     return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         return err;
@@ -73,6 +57,5 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
   };
-
-  return Provider;
+  return Admin;
 };

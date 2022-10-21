@@ -1,42 +1,91 @@
 "use strict";
 
-const { Service, ProviderModel } = require("../models");
-
+const { Service, providerModel, orderModel } = require("../models");
 
 const express = require("express");
 // eslint-disable-next-line new-cap
 const services = express.Router();
+const serverError = require("../error-handlers/500");
+const { userAuth, serviceAuth } = require("../middlewares/bearer-auth");
+const { imgUpload } = require("../upload/imagesUplaod");
+const { ACL } = require("../middlewares/ACL");
+
+services.post("/service", imgUpload.array('serviceImages', 3), serviceAuth, ACL, createNewService);
 
 services.get("/services", getAllServices);
-services.post("/service", createNewService);
+services.get("/service/:id", serverError, getService);
 
-services.get("/service/:id", getService);
-services.delete("/service/:id", deleteService);
+services.put("/service/:id", imgUpload.array('serviceImages', 3), serviceAuth, ACL, updateService);
 
-services.get("/services", (req, res) => {
-  res.send("Hello Services");
-});
+services.delete("/service/:id", serverError, serviceAuth, ACL, deleteService);
+
+async function updateService(req, res) {
+    try {
+        if (req.files) {
+            req.body.serviceImages = req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
+        }
+        const service = await Service.updateService(req.params.id, req.body);
+        res.status(200).json(service);
+    } catch (error) {
+        console.log(error);
+        res.status(401).json({
+            error: error
+        });
+    }
+}
 
 async function getAllServices(req, res) {
-  let allServices = await Service.getAllServices(ProviderModel);
-  res.status(200).json(allServices);
+    try {
+        let allServices = await Service.getAllServices(providerModel, orderModel);
+        res.status(200).json(allServices);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: error,
+        });
+    }
 }
 
 async function createNewService(req, res) {
-  const obj = req.body;
-  let newService = await Service.createService(obj);
-  res.status(201).json(newService);
+    try {
+        if (req.files) {
+            req.body.serviceImages = await req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
+        }
+        const obj = req.body;
+        let newService = await Service.create(obj);
+        // console.log(newService);
+        res.status(201).json(newService);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: error,
+        });
+    }
 }
 
 async function getService(req, res) {
-  let requestedService = await Service.getService(req.params.id, ProviderModel);
-  res.status(200).json(requestedService);
+    try {
+        let requestedService = await Service.getService(req.params.id, providerModel, orderModel);
+        res.status(200).json(requestedService);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: error,
+        });
+    }
 }
 
 async function deleteService(req, res) {
-  let deletedService = await Service.hideService(req.params.id, ProviderModel);
-  res.status(202).json(deletedService);
+    try {
+        let deletedService = await Service.hideService(req.params.id, providerModel);
+        res.status(202).json(deletedService);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: error,
+        });
+    }
 }
 
-console.log("services.route.js");
+
 module.exports = services;

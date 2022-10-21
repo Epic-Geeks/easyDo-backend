@@ -2,24 +2,21 @@
 
 const { Sequelize, DataTypes } = require("sequelize");
 
+
+const admin = require("./admin.model");
 const service = require("./service.model");
 const order = require("./orders.model");
 const customer = require("./customer.model");
 const provider = require("./provider.model.js");
-const OrdersCollection = require("../collections/ordersCollection");
 
-const CustomerCollection = require("../collections/customerCollection");
-
-const ServicesCollection = require("../collections/servicesCollection");
-
-const ProviderCollection = require("../collections/providerCollection");
+const Collection = require("../collections/collections");
 
 const POSTGRES_URL =
-  process.env.DATABASE_URL ||
-  "postgresql://postgres:1312@localhost:5432/postgres";
+  process.env.DATABASE_URL || "postgresql://malek:1312@localhost:5432/postgres";
 
 const sequelize = new Sequelize(POSTGRES_URL);
 
+const adminModel = admin(sequelize, DataTypes);
 const serviceModel = service(sequelize, DataTypes);
 const orderModel = order(sequelize, DataTypes);
 const customerModel = customer(sequelize, DataTypes);
@@ -59,20 +56,22 @@ orderModel.belongsTo(serviceModel, {
   targetKey: "id",
 });
 
-const orders =  new OrdersCollection(orderModel);
-
-const customers = new CustomerCollection(customerModel);
-
-const services = new ServicesCollection(serviceModel);
-
-const providers = new ProviderCollection(providerModel);
+const orders = new Collection(orderModel);
+const customers = new Collection(customerModel);
+const services = new Collection(serviceModel);
+const admins = new Collection(adminModel);
+const providers = new Collection(providerModel);
 
 module.exports = {
   db: sequelize,
   Provider: providers,
   Customer: customers,
+  customerModel: customerModel,
   Order: orders,
+  orderModel: orderModel,
   Service: services,
-  ProviderModel: providerModel,
-  ServiceModel: serviceModel
+  Admin: admins,
+  providerModel: providerModel,
+  serviceModel: serviceModel,
+  adminModel: adminModel
 };

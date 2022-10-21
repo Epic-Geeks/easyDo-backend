@@ -1,6 +1,7 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
+
   const order = sequelize.define("OrdersTest", {
     orderNotes: {
       type: DataTypes.STRING,
@@ -11,21 +12,26 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: true
     },
     status: {
-      type: DataTypes.ENUM("received", "inProgress", "done"),
-      defaultValue: "received"
+      // eslint-disable-next-line new-cap
+      type: DataTypes.ENUM("pending", "approved","inProgress", "done"),
+      defaultValue: "pending"
     },
-    // customerID: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
-    // providerID: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
-    // serviceID: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
+    customerID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    providerID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    serviceID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    rateService: {
+      type: DataTypes.DOUBLE,
+      defaultValue: 4.0
+    }
   });
   return order;
 };
