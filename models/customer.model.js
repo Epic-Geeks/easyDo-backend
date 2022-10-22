@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       isEmail: true,
     },
-    customerPic: {
+    picture: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     },

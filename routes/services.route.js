@@ -10,19 +10,19 @@ const { userAuth, serviceAuth } = require("../middlewares/bearer-auth");
 const { imgUpload } = require("../upload/imagesUplaod");
 const { ACL } = require("../middlewares/ACL");
 
-services.post("/service", imgUpload.array('serviceImages', 3), serviceAuth, ACL, createNewService);
+services.post("/service", imgUpload.array('picture', 3), serviceAuth, ACL, createNewService);
 
 services.get("/services", getAllServices);
 services.get("/service/:id", serverError, getService);
 
-services.put("/service/:id", imgUpload.array('serviceImages', 3), serviceAuth, ACL, updateService);
+services.put("/service/:id", imgUpload.array('picture', 3), serviceAuth, ACL, updateService);
 
 services.delete("/service/:id", serverError, serviceAuth, ACL, deleteService);
 
 async function updateService(req, res) {
     try {
         if (req.files) {
-            req.body.serviceImages = req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
+            req.body.picture = req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
         }
         const service = await Service.updateService(req.params.id, req.body);
         res.status(200).json(service);
@@ -49,7 +49,7 @@ async function getAllServices(req, res) {
 async function createNewService(req, res) {
     try {
         if (req.files) {
-            req.body.serviceImages = await req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
+            req.body.picture = await req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
         }
         const obj = req.body;
         let newService = await Service.create(obj);

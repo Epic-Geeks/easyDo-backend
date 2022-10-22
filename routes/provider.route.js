@@ -13,12 +13,12 @@ const { Provider, serviceModel, orderModel } = require("../models");
 const { imgUpload } = require("../upload/imagesUplaod");
 const { ACL } = require("../middlewares/ACL");
 
-provider.post("/provider/signup", imgUpload.array("providerPic", 1), checkSignup, signup);
+provider.post("/provider/signup", imgUpload.array("picture", 1), checkSignup, signup);
 provider.post("/provider/signin", signin);
 
 provider.get("/provider/:id", serverError, userAuth, getProvider);
 
-provider.put("/provider/:id", imgUpload.array("provider", 1), userAuth, ACL, updateProvider);
+provider.put("/provider/:id", imgUpload.array("picture", 1), userAuth, ACL, updateProvider);
 
 provider.delete("/provider/:id", userAuth, ACL, holdServices);
 
@@ -42,7 +42,7 @@ async function getProvider(req, res) {
 async function updateProvider(req, res) {
   try {
     if (req.files && req.files.length > 0) {
-      req.body.providerPic = req.files.map(
+      req.body.picture = req.files.map(
         (file) => `${process.env.BACKEND_URL}/${file.filename}`
       );
     }
