@@ -61,7 +61,7 @@ const signup = async (req, res) => {
     let model = models[`${requested}Model`];
     req.body.password = await bcrypt.hash(req.body.password, 10);
     if (req.files) {
-      req.body[`${requested}Pic`] = await req.files.map(
+      req.body.picture = await req.files.map(
         (file) => `${process.env.BACKEND_URL}/${file.filename}`
       );
     }

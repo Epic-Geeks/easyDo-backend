@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DOUBLE,
       allowNull: false,
     },
-    serviceImages: {
+    picture: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     },
