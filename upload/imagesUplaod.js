@@ -3,6 +3,9 @@
 const multer = require("multer");
 const path = require("path");
 const uuid = require("uuid").v4;
+multer.diskStorage ({destination: "images/services/"})
+multer.diskStorage ({destination: "images/customers/"})
+multer.diskStorage ({destination: "images/providers/"})
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -22,7 +25,6 @@ const storage = multer.diskStorage({
 
   },
 });
-
 const imgUpload = multer({
   storage: storage,
 });
