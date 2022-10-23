@@ -4,8 +4,8 @@
   "description": "backend repo for our online services shop EasyDo",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "node index.js"
+    "test": "jest --coverage --verbose ", 
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "jest": "^29.0.3",
+    "jest": "^29.2.1",
     "supertest": "^6.2.4"
   }
 }
