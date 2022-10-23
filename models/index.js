@@ -25,7 +25,7 @@ const sequelizeOption = {
   },
 };
 
-const sequelize = new Sequelize(POSTGRES_URL, sequelizeOption);
+const sequelize = new Sequelize(POSTGRES_URL, /* sequelizeOption */);
 
 const adminModel = admin(sequelize, DataTypes);
 const serviceModel = service(sequelize, DataTypes);
