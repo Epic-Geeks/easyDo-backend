@@ -9,6 +9,7 @@ const services = require("./routes/services.route");
 const orders = require("./routes/orders.route");
 const notFound = require("./error-handlers/404");
 const serverError = require("./error-handlers/500");
+const chat = require("./routes/chat.route");
    
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(provider);
 app.use(customer);
 app.use(services);
 app.use(orders);
+app.use(chat);
 
 app.get("/", (req, res) => {
  res.status(200).send("Hello World");

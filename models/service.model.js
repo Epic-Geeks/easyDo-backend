@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    averageRate: {
+      type: DataTypes.DOUBLE,
+      defaultValue: 0.0,
+    },
     providerID: {
       type: DataTypes.INTEGER,
       allowNull: false,

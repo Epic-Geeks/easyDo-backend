@@ -8,6 +8,7 @@ const service = require("./service.model");
 const order = require("./orders.model");
 const customer = require("./customer.model");
 const provider = require("./provider.model.js");
+const chat = require("./chat.model.js");
 
 const Collection = require("../collections/collections");
 
@@ -31,7 +32,7 @@ const serviceModel = service(sequelize, DataTypes);
 const orderModel = order(sequelize, DataTypes);
 const customerModel = customer(sequelize, DataTypes);
 const providerModel = provider(sequelize, DataTypes);
-
+const chatModel = chat(sequelize, DataTypes);
 
 providerModel.hasMany(serviceModel, {
   foreignKey: "providerID",
@@ -66,6 +67,12 @@ orderModel.belongsTo(serviceModel, {
   targetKey: "id",
 });
 
+customerModel.hasMany(chatModel, { foreignKey: "customerID", sourceKey: "id" });
+chatModel.belongsTo(customerModel, { foreignKey: "customerID", targetKey: "id" });
+
+providerModel.hasMany(chatModel, { foreignKey: "providerID", sourceKey: "id" });
+chatModel.belongsTo(providerModel, { foreignKey: "providerID", targetKey: "id" });
+
 const orders = new Collection(orderModel);
 const customers = new Collection(customerModel);
 const services = new Collection(serviceModel);
@@ -83,5 +90,6 @@ module.exports = {
   Admin: admins,
   providerModel: providerModel,
   serviceModel: serviceModel,
-  adminModel: adminModel
+  adminModel: adminModel,
+  chatModel: chatModel,
 };
