@@ -26,10 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     // five orders per day:
-    // availableTimes: {
-    //   type: DataTypes.ARRAY(DataTypes.STRING),
-    //   allowNull: false,
-    // },
+    availableTimes: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+    },
     suspend: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
