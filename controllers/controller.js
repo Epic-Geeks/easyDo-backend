@@ -74,8 +74,8 @@ const signup = async (req, res) => {
       res.status(403).send("Invalid Signup");
     }
   } catch (e) {
-    console.log("Error update record: " + e?.errors[0]?.message);
-    return "Error update record: " + e?.errors[0]?.message;
+    console.log("Error update record: " + e);
+    return res.send("Error update record: " + e);
   }
 };
 

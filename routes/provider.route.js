@@ -9,7 +9,7 @@ const serverError = require("../error-handlers/500");
 
 const { userAuth } = require("../middlewares/bearer-auth");
 
-const { Provider, serviceModel, orderModel } = require("../models");
+const { Provider, serviceModel, orderModel, providerModel } = require("../models");
 const { imgUpload } = require("../upload/imagesUplaod");
 const { ACL } = require("../middlewares/ACL");
 
