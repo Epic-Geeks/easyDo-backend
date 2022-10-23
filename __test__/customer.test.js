@@ -32,10 +32,6 @@ describe('customer route', () => {
          });
 
     });
-    // it('test get all customers route', async () => {
-    //     const response = await request.get('/customer');
-    //     expect(response.status).toEqual(200);
-    // });
     
     it('test get customer by id route', async () => {
         if(!customerUser){
@@ -44,11 +40,6 @@ describe('customer route', () => {
             const response = await request.get('/customer/1').set('Authorization', `Bearer ${token}`);
             expect(response.status).toEqual(200);
         } 
-        // else {
-        //     let token = customerUser.generateToken({username: 'customer', password: 'customer', email: 'customer@customer.com'});
-        //     const response = await request.get('/customer/1').set('Authorization', `Bearer ${token}`);
-        //     expect(response.status).toEqual(200);
-        // }
     });
 
     it('test update customer by id route', async () => {
@@ -62,15 +53,6 @@ describe('customer route', () => {
             });
             expect(response.status).toEqual(200);
         } 
-        // else {
-        //     let token = customerUser.generateToken({username: 'customer', password: 'customer', email: 'customer@customer.com'});
-        //     const response = await request.put('/customer/1').set('Authorization', `Bearer ${token}`).send({
-        //         username: 'customer1',
-        //         password: 'customer',
-        //         email: 'customer@customer.com'
-        //     });
-        //     expect(response.status).toEqual(200);
-        // }
     });
 
     it('test delete customer by id route', async () => {
@@ -79,13 +61,7 @@ describe('customer route', () => {
             let token = customer.generateToken({username: 'customer', password: 'customer', email: 'customer@customer.com'});
             const response = await request.delete('/customer/1').set('Authorization', `Bearer ${token}`);
             expect(response.status).toEqual(202);
-        
         }
-        // else {
-        //     let token = customer.generateToken({username: 'customer', password: 'customer', email: 'customer@customer.com'});
-        //     const response = await request.delete('/customer/1').set('Authorization', `Bearer ${token}`);
-        //     expect(response.status).toEqual(202);
-        // }
     });
 });
 
