@@ -4,11 +4,20 @@ const supertest = require("supertest");
 const server = require("../server");
 const { customerModel } = require("../models");
 const create = require("../collections/collections");
+const { getCustomer } = require("../routes/customer.route");
 const request = supertest(server.app);
 
 const customerUser = customerModel.findOne({ where: { username: "customer" } });
 
 // test the customer route
+
+// describe("customer route", () => {
+//     it("Testing new ", () => {
+//         const req = { id: 1};
+//         const data = getCustomer(req);
+//         console.log(data);
+//     })
+// })
 describe("customer route", () => {
   it("test customer signup route", async () => {
     const checkExist = await customerModel.findOne({
