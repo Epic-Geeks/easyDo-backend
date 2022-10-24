@@ -24,7 +24,9 @@ describe('provider routes', () => {
             provider = create('provider', { username: 'provider', password: 'provider', email: 'provider@provider.com' });
             let token = provider.generateToken({ username: 'provider', password: 'provider', email: 'provider@provider.com'});
             const response = await request.post('/provider/signin').set('Authorization', `Bearer ${token}`);
-            expect(response.status).toEqual(200)
+            expect(response.status).toEqual(200);
+            expect(response.body.token).toBeDefined();
+            expect(response.body).toEqual({username: 'provider', password: 'provider', email: 'provider@provider.com'})
         }
     });
 
@@ -33,15 +35,25 @@ describe('provider routes', () => {
             provider = create('provider', { username: 'provider', password: 'provider', email: 'provider@provider.com' });
             let token = provider.generateToken({ username: 'provider', password: 'provider', email: 'provider@provider.com' });
             const response = await request.get('/provider/1').set('Authorization', `Bearer ${token}`);
-            expect(response.status).toEqual(200)
+            expect(response.status).toEqual(200);
+            expect(response.body).toEqual({username: 'provider', password: 'provider', email: 'provider@provider.com' });
         }});
 
     it ('test update provider', async () => {
         if (!providerUser) {
             provider = create('provider', { username: 'provider', password: 'provider', email: 'provider@provider.com' });
             let token = provider.generateToken({ username: 'provider', password: 'provider', email: 'provider@provider.com' });
-            const response = await request.put('/provider/1').set('Authorization', `Bearer ${token}`);
-            expect(response.status).toEqual(200)
+            const response = await request.put('/provider/1').set('Authorization', `Bearer ${token}`).send({
+                username: 'provider1',
+                password: 'provider1',
+                email: 'provider1@provider.com'
+            });
+            expect(response.status).toEqual(200);
+            expect(response.body).toEqual({
+                username: 'provider1',
+                password: 'provider1',
+                email: 'provider1@provider.com'
+            });
         }});
 
     it ('test delete provider', async () => {
@@ -49,7 +61,8 @@ describe('provider routes', () => {
             provider = create('provider', { username: 'provider', password: 'provider', email: 'provider@provider.com' });
             let token = provider.generateToken({ username: 'provider', password: 'provider', email: 'provider@provider.com' });
             const response = await request.delete('/provider/1').set('Authorization', `Bearer ${token}`);
-            expect(response.status).toEqual(202)
+            expect(response.status).toEqual(202);
+            expect(response.body).toEqual(null);
         }});
 
             
