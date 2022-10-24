@@ -26,6 +26,7 @@ const order = orderModel.findOne({ where: { id: 1 } });
       });
    
    it('test get all orders route', async () => {
+
       if(!order){
             order = create('order', { customer_id: 1, provider_id: 1, service_id: 1, order_status: 'pending', rateService: 4.0, order_date: '2022-10-24' });
             const response = await request.get('/orders');
@@ -36,7 +37,6 @@ const order = orderModel.findOne({ where: { id: 1 } });
             expect(response.body[0].rateService).toEqual(4.0);
             expect(response.body[0].order_date).toEqual('2022-10-24');
             }
-      
       });
 
 
