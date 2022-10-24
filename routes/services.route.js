@@ -19,7 +19,13 @@ services.put("/service/:id", imgUpload.array('picture', 3), serviceAuth, ACL, up
 
 services.delete("/service/:id", serverError, serviceAuth, ACL, deleteService);
 
-async function updateService(req, res) {
+const errorObj = (error) => {
+    return {
+        message: error,
+        status: 500
+    }
+};
+async function updateService(req, res, next) {
     try {
         if (req.files) {
             req.body.picture = req.files.map((file) => `${process.env.BACKEND_URL}/${file.filename}`);
@@ -28,21 +34,17 @@ async function updateService(req, res) {
         res.status(200).json(service);
     } catch (error) {
         console.log(error);
-        res.status(401).json({
-            error: error
-        });
+        next(errorObj(error));
     }
 }
 
-async function getAllServices(req, res) {
+async function getAllServices(req, res, next) {
     try {
         let allServices = await Service.getAllServices(providerModel, orderModel);
         res.status(200).json(allServices);
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            error: error,
-        });
+        next(errorObj(error));
     }
 }
 
@@ -57,9 +59,7 @@ async function createNewService(req, res) {
         res.status(201).json(newService);
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            error: error,
-        });
+        next(errorObj(error));
     }
 }
 
@@ -69,9 +69,7 @@ async function getService(req, res) {
         res.status(200).json(requestedService);
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            error: error,
-        });
+        next(errorObj(error));
     }
 }
 
@@ -81,9 +79,7 @@ async function deleteService(req, res) {
         res.status(202).json(deletedService);
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            error: error,
-        });
+        next(errorObj(error));
     }
 }
 

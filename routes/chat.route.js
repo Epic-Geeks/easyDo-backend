@@ -11,18 +11,24 @@ chat.get("/chat/:customerID/:providerID", getChat);
 
 chat.delete("/chat/:id", deleteChat);
 
+const errorObj = (error) => {
+    return {
+        message: error,
+        status: 500
+    }
+};
 
-async function createChat( req, res, next) {
+async function createChat(req, res, next) {
     try {
         const { customerID, providerID } = req.params;
         console.log(customerID, providerID);
         if (customerID && providerID) {
-            let chat = await chatModel.findOne({where: { customerID: customerID, providerID: providerID }});
+            let chat = await chatModel.findOne({ where: { customerID: customerID, providerID: providerID } });
             if (!chat) {
                 chat = await chatModel.create({ customerID: customerID, providerID: providerID });
-                return next ()
+                return next()
             } else {
-               return  next();
+                return next();
             }
         }
         console.log(req.body);
@@ -30,35 +36,31 @@ async function createChat( req, res, next) {
         return res.status(201).json(newChat);
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            error: error,
-        });
+        next(errorObj(error));
     }
 }
 
 async function getChat(req, res) {
     try {
         const { customerID, providerID } = req.params;
-        let chat = await chatModel.findOne({where: { customerID: customerID, providerID: providerID }});
+        let chat = await chatModel.findOne({ where: { customerID: customerID, providerID: providerID } });
         res.status(200).json(chat);
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            error: error,
-        });
+        next(errorObj(error));
     }
 }
 
 
-async function updateChat (req, res) {
+async function updateChat(req, res) {
     try {
         console.log(req.body.ChatMessages);
-        if(!req.body.ChatMessages[0]) {
-           return res.end()
+        if (!req.body.ChatMessages[0]) {
+            return res.end();
         }
         const { customerID, providerID } = req.params;
         console.log(customerID, providerID);
-        const old = await chatModel.findOne({where: { customerID: customerID, providerID: providerID }});
+        const old = await chatModel.findOne({ where: { customerID: customerID, providerID: providerID } });
         console.log(req.body.ChatMessages[0]);
         console.log(old.ChatMessages);
         const newArr = [...old.ChatMessages, req.body.ChatMessages[0]];
@@ -67,9 +69,7 @@ async function updateChat (req, res) {
         res.status(200).json(newChat);
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            error: error,
-        });
+        next(errorObj);
     }
 }
 
@@ -80,15 +80,9 @@ async function deleteChat(req, res) {
         res.status(200).json(deletedChat);
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            error: error,
-        });
+        next(errorObj(error));
     }
 }
 
 
-
 module.exports = chat;
-
-// create routes for: create customer, get all customers, get one customer,
-// update customer info, suspend customer

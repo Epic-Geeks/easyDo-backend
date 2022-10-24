@@ -22,8 +22,14 @@ provider.put("/provider/:id", imgUpload.array("picture", 1), userAuth, ACL, upda
 
 provider.delete("/provider/:id", userAuth, ACL, holdServices);
 
+const errorObj = (error) => {
+  return {
+    message: error,
+    status: 500
+  }
+};
 
-async function getProvider(req, res) {
+async function getProvider(req, res, next) {
   try {
     let requestedProvider = await Provider.getProvider(
       req.params.id,
@@ -33,13 +39,11 @@ async function getProvider(req, res) {
     res.status(200).json(requestedProvider);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error,
-    });
+    next(errorObj(error));
   }
 }
 
-async function updateProvider(req, res) {
+async function updateProvider(req, res, next) {
   try {
     if (req.files && req.files.length > 0) {
       req.body.picture = req.files.map(
@@ -54,9 +58,7 @@ async function updateProvider(req, res) {
     res.status(200).json(requestedProvider);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      error: error,
-    });
+    next(errorObj(error));
   }
 }
 
@@ -69,9 +71,7 @@ async function holdServices(req, res) {
     res.status(202).json(deletedProvider);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      error: error,
-    });
+    next(errorObj(error));
   }
 }
 
