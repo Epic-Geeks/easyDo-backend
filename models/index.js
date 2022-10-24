@@ -13,17 +13,17 @@ const chat = require("./chat.model.js");
 const Collection = require("../collections/collections");
 
 const POSTGRES_URL =
-  process.env.DATABASE_URL || "postgresql://malek:1312@localhost:5432/postgres";
+  process.env.DATABASE_URL || "postgresql://shaima:0000@localhost:5432/shaima";
 
 
-const sequelizeOption = {
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
-  },
-};
+// const sequelizeOption = {
+//   dialectOptions: {
+//     ssl: {
+//       require: true,
+//       rejectUnauthorized: false,
+//     },
+//   },
+// };
 
 const sequelize = new Sequelize(POSTGRES_URL, /* sequelizeOption */);
 
