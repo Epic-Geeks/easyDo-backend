@@ -11,7 +11,12 @@ const { ACL } = require("../middlewares/ACL.js");
 admin.get("/admin", (req, res) => {
   res.send("Hello Admin");
 });
-
+const errorObj = (error) => {
+  return {
+    message: error,
+    status: 500
+  }
+};
 admin.post("/admin/signup", checkSignup, signup);
 admin.post("/admin/signin", signin);
 
@@ -24,7 +29,7 @@ admin.delete("/admin/:id", userAuth, deleteAdmin);
 admin.delete("/suspendAdmin/:id", userAuth, suspendAdmin);
 
 // provider control routes
-admin.get("/customer",  userAuth, ACL, getAllCustomers);
+admin.get("/customer", userAuth, ACL, getAllCustomers);
 admin.delete("/susCustomer/:id", userAuth, ACL, suspendCustomer);
 
 // provider control routes
@@ -33,15 +38,13 @@ admin.delete("/providerSus/:id", userAuth, ACL, suspendProvider);
 
 
 
-async function getAllAdmins(req, res) {
+async function getAllAdmins(req, res, next) {
   try {
     let allAdmin = await Admin.getAll();
     res.status(200).json(allAdmin);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error
-    });
+    next(errorObj(error));
   }
 }
 
@@ -51,9 +54,7 @@ async function getAdminById(req, res) {
     res.status(200).json(AdminById);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error
-    });
+    next(errorObj(error));
   }
 }
 
@@ -63,9 +64,7 @@ async function updateAdmin(req, res) {
     res.status(200).json(updateAdmin);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error
-    });
+    next(errorObj(error));
   }
 }
 
@@ -75,8 +74,9 @@ async function deleteAdmin(req, res) {
     res.status(202).json(deletedAdmin);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error
+    next({
+      message: error,
+      status: 410
     });
   }
 }
@@ -87,8 +87,9 @@ async function suspendAdmin(req, res) {
     res.status(202).json(suspendAdmin);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error
+    next({
+      message: error,
+      status: 410
     });
   }
 }
@@ -103,9 +104,7 @@ async function getAllCustomers(req, res) {
     return res.status(200).json(allCustomers);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error
-    });
+    next(errorObj(error));
   }
 }
 
@@ -117,8 +116,9 @@ async function suspendCustomer(req, res) {
     res.status(202).json(suspendCustomer);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error
+    next({
+      message: error,
+      status: 410
     });
   }
 }
@@ -131,9 +131,7 @@ async function getAllProviders(req, res) {
     res.status(200).json(allProviders);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error,
-    });
+    next(errorObj(error));
   }
 }
 
@@ -147,8 +145,9 @@ async function suspendProvider(req, res) {
     res.status(202).json(deletedProvider);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error,
+    next({
+      message: error,
+      status: 410
     });
   }
 }

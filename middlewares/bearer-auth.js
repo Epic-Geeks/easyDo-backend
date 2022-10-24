@@ -11,7 +11,7 @@ const userAuth = async (req, res, next) => {
     console.log("model", requested, models);
 
     if (!req.headers.authorization) {
-      return res.status(401).send("You're not authorized..!!");
+      return res.status(511).send("Authentication Required");
     }
     const token = req.headers.authorization.split(" ")[1];
     const validUser = model.authenticateToken(token);
@@ -35,7 +35,7 @@ const orderAuth = async (req, res, next) => {
   try {
 
     if (!req.headers.authorization) {
-      return res.status(401).send("You're not authorized..!!");
+      return res.status(511).send("Authentication Required");
     }
     const token = req.headers.authorization.split(" ")[1];
     const validUser = customerModel.authenticateToken(token);
@@ -60,7 +60,7 @@ const serviceAuth = async (req, res, next) => {
   try {
 
     if (!req.headers.authorization) {
-      return res.status(401).send("You're not authorized..!!");
+      return res.status(511).send("Authentication Required");
     }
     const token = req.headers.authorization.split(" ")[1];
     const validUser = providerModel.authenticateToken(token);

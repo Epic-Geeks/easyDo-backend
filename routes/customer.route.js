@@ -9,7 +9,7 @@ const { signin, signup } = require("../controllers/controller");
 const serverError = require("../error-handlers/500");
 const { userAuth } = require("../middlewares/bearer-auth");
 const { imgUpload } = require("../upload/imagesUplaod");
-const {  ACL } = require("../middlewares/ACL");
+const { ACL } = require("../middlewares/ACL");
 
 customer.post("/customer/signup", imgUpload.array("picture", 1), checkSignup, signup);
 customer.post("/customer/signin", signin);
@@ -19,16 +19,19 @@ customer.get("/customer/:id", serverError, userAuth, getCustomer);
 customer.put("/customer/:id", imgUpload.array("picture", 1), userAuth, ACL, updateCustomer);
 
 customer.delete("/customer/:id", userAuth, ACL, deleteCustomer);
-
+const errorObj = (error) => {
+  return {
+    message: error,
+    status: 500
+  }
+};
 async function getCustomer(req, res) {
   try {
     let requestedCustomer = await Customer.getCustomerById(req.params.id, orderModel);
     res.status(200).json(requestedCustomer);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error
-    });
+    next(errorObj(error));
   }
 }
 
@@ -41,21 +44,17 @@ async function updateCustomer(req, res) {
     res.status(200).json(requestedCustomer);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      error: error
-    });
+    next(errorObj);
   }
 }
 
 async function deleteCustomer(req, res) {
   try {
     let deletedCustomer = await Customer.hide(req.params.id);
-    res.status(202).json(deletedCustomer);
+    res.status(204).json(deletedCustomer);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      error: error
-    });
+    next(errorObj);
   }
 }
 

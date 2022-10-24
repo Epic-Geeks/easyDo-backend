@@ -6,14 +6,21 @@ const { Order, orderModel, serviceModel, Provider } = require("../models");
 const orders = express.Router();
 const serverError = require("../error-handlers/500");
 const { ACL } = require("../middlewares/ACL");
-const { userAuth, orderAuth } = require("../middlewares/bearer-auth")
+const { userAuth, orderAuth } = require("../middlewares/bearer-auth");
+const { sendEmail } = require("../middlewares/handlebars");
 orders.get("/orders", getAllOrders);
-orders.post("/order", orderAuth, ACL, checkDate, createNewOrder);
+orders.post("/order", orderAuth, ACL, checkDate, createNewOrder, sendEmail);
 
 orders.get("/order/:id", serverError, getOrder);
 orders.put("/orderStatus/:id/:condition", updateCondition);
 
 orders.delete("/order/:id", deleteOrder);
+const errorObj = (error) => {
+  return {
+    message: error.message,
+    status: 500
+  }
+};
 
 async function checkDate(req, res, next) {
   try {
@@ -40,21 +47,19 @@ async function checkDate(req, res, next) {
     }
     return next();
   } catch (error) {
-    console.log("Error while hold services ", e.message || e);
-    return ("Error while hold services ", e.message || e);
+    next(errorObj(error));
   }
 }
 
-async function createNewOrder(req, res) {
+async function createNewOrder(req, res, next) {
   try {
     const obj = req.body;
     let newOrder = await Order.create(obj);
-    res.status(201).json(newOrder);
+    req.orderDetails = newOrder;
+    return next();
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      error: error,
-    });
+    next(errorObj(error));
   }
 }
 
@@ -64,9 +69,7 @@ async function getAllOrders(req, res) {
     res.status(200).json(allOrders);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error,
-    });
+    next(errorObj(error));
   }
 }
 
@@ -76,13 +79,11 @@ async function getOrder(req, res) {
     res.status(200).json(requestedOrder);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error,
-    });
+    next(errorObj(error));
   }
 }
 
-async function updateCondition(req, res) {
+async function updateCondition(req, res, next) {
   try {
     let requestedOrder = await Order.updateOrderStatus(
       req.params.id,
@@ -103,9 +104,7 @@ async function updateCondition(req, res) {
     return res.status(200).json(requestedOrder);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error,
-    });
+    next(errorObj(error));
   }
 }
 
@@ -115,9 +114,7 @@ async function deleteOrder(req, res) {
     res.status(202).json(deletedOrder);
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      error: error,
-    });
+    next(errorObj(error));
   }
 }
 
