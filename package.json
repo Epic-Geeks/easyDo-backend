@@ -4,7 +4,7 @@
   "description": "backend repo for our online services shop EasyDo",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage --verbose",
+    "test": "jest --coverage --verbose --detectOpenHandles",
     "start" : "node index.js"
   },
   "repository": {

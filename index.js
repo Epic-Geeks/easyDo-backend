@@ -5,7 +5,7 @@ const server = require("./server");
 const { db } = require("./models/index");
 const PORT = process.env.PORT || 3001;
 
-db.sync({force: true})
+db.sync()
   .then(() => {
     server.run(PORT);
   })

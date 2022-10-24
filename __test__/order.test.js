@@ -23,8 +23,12 @@ const order = orderModel.findOne({ where: { id: 1 } });
       });
    
    it('test get all orders route', async () => {
-         const response = await request.get('/orders');
-         expect(response.status).toEqual(200);
+            if(!order){
+            const response = await request.get('/orders');   
+            expect(response.status).toEqual(200);
+            }
+      //    const response = await request.get('/orders');
+      //    expect(response.status).toEqual(200);
       });
 
 
