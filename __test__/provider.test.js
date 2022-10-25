@@ -12,7 +12,7 @@ const providerUser = providerModel.findOne({ where: { username: 'provider', emai
 describe('provider routes', () => {
     it('test provider signup', async () => {
         if (!providerUser) {
-            provider = create('provider', { username: 'provider', password: 'provider', email: 'provider@provider.com' });
+            provider = create('provider', { username: 'provider', name: "provider", password: 'provider', email: 'provider@provider.com' });
             let token = provider.generateToken({ username: 'provider', password: 'provider', email: 'provider@provider.com' });
             const response = await request.post('/provider/signup').set('Authorization', `Bearer ${token}`);
             expect(response.status).toEqual(201)
@@ -23,7 +23,7 @@ describe('provider routes', () => {
         if (!providerUser) {
             provider = create('provider', { username: 'provider', password: 'provider', email: 'provider@provider.com' });
             let token = provider.generateToken({ username: 'provider', password: 'provider', email: 'provider@provider.com'});
-            const response = await request.post('/provider/signin').set('Authorization', `Bearer ${token}`);
+            const response = await request.post('/signin').set('Authorization', `Bearer ${token}`);
             expect(response.status).toEqual(200);
             expect(response.body.token).toBeDefined();
             expect(response.body).toEqual({username: 'provider', password: 'provider', email: 'provider@provider.com'})
@@ -58,7 +58,7 @@ describe('provider routes', () => {
 
     it ('test delete provider', async () => {
         if (!providerUser) {
-            provider = create('provider', { username: 'provider', password: 'provider', email: 'provider@provider.com' });
+            provider = create('provider', { username: 'provider', name: 'admin',  password: 'provider', email: 'provider@provider.com' });
             let token = provider.generateToken({ username: 'provider', password: 'provider', email: 'provider@provider.com' });
             const response = await request.delete('/provider/1').set('Authorization', `Bearer ${token}`);
             expect(response.status).toEqual(202);

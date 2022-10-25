@@ -27,6 +27,7 @@ describe("customer route", () => {
       const response = await request.post("/customer/signup").send({
         username: "customer",
         email: "customer@customer.com",
+        name: "customer",
         password: "customer",
         role: "customer",
       });
@@ -36,7 +37,7 @@ describe("customer route", () => {
       expect(response.body.role).toEqual("customer");
       expect(response.status).toEqual(201);
     } else {
-      const response = await request.post("/customer/signin").send({
+      const response = await request.post("/signin").send({
         username: "customer",
         password: "customer",
       });
@@ -46,7 +47,7 @@ describe("customer route", () => {
 
   it("test customer signin route", async () => {
     if (!customerUser) {
-      const response = await request.post("/customer/signin").send({
+      const response = await request.post("/signin").send({
         username: "customer",
         password: "customer",
       });
