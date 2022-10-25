@@ -40,6 +40,7 @@ async function createNewService(req, res) {
         (file) => `${process.env.BACKEND_URL}/${file.filename}`
       );
     }
+    req.body.providerID = req.userInfo.id;
     const obj = req.body;
     let newService = await Service.create(obj);
     // console.log(newService);

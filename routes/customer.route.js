@@ -21,7 +21,6 @@ customer.post(
   checkSignup,
   signup
 );
-customer.post("/customer/signin", signin);
 
 customer.get("/customer/:id", serverError, userAuth, getCustomer);
 

@@ -2,7 +2,7 @@
 
 module.exports = (sequelize, DataTypes) => {
 
-  const order = sequelize.define("OrdersTest", {
+  const order = sequelize.define("Order", {
     orderNotes: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
     orderDate: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    reviewComment: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   });
   return order;
