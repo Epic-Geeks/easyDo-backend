@@ -4,11 +4,14 @@ const jwt = require("jsonwebtoken");
 
 /* istanbul ignore next */
 module.exports = (sequelize, DataTypes) => {
-  const Customer = sequelize.define("CustomersRoles", {
+  const Customer = sequelize.define("Customer", {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
@@ -22,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     customerAddress: {
       type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: true,
+      defaultValue: [],
     },
     suspend: {
       type: DataTypes.BOOLEAN,

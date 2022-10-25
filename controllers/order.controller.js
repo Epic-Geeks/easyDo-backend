@@ -12,12 +12,15 @@ const errorObj = (error) => {
 async function checkDate(req, res, next) {
   try {
     const day = req.body.orderDate;
+    const serviceID = req.body.serviceID;
+    const service = await serviceModel.findOne({ where: { id: serviceID } });
+    req.body.providerID = service.providerID;  
     let requestedProvider = await Provider.getProvider(
       req.body.providerID,
       serviceModel,
       orderModel
     );
-    let ordersRequests = requestedProvider.OrdersTests.map((order) => {
+    let ordersRequests = requestedProvider.Orders.map((order) => {
       //  return JSON.stringify(order.dataValues.createdAt).split("T")[0].slice(1);
       return order.dataValues.orderDate;
     });
@@ -40,6 +43,7 @@ async function checkDate(req, res, next) {
 
 async function createNewOrder(req, res, next) {
   try {
+    req.body.customerID = req.userInfo.id;
     const obj = req.body;
     let newOrder = await Order.create(obj);
     req.orderDetails = newOrder;
@@ -75,7 +79,8 @@ async function updateCondition(req, res, next) {
     let requestedOrder = await Order.updateOrderStatus(
       req.params.id,
       req.params.condition,
-      req.body.rateService
+      req.body.rateService,
+      req.body.reviewComment
     );
 
     if (req.params.condition == "done") {

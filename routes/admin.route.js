@@ -23,7 +23,6 @@ admin.get("/admin", (req, res) => {
 });
 
 admin.post("/admin/signup", checkSignup, signup);
-admin.post("/admin/signin", signin);
 
 admin.get("/admin", userAuth, getAllAdmins);
 admin.get("/admin/:id", userAuth, getAdminById);

@@ -23,7 +23,7 @@ provider.post(
   checkSignup,
   signup
 );
-provider.post("/provider/signin", signin);
+provider.post("/signin", signin);
 
 provider.get("/provider/:id", serverError, userAuth, getProvider);
 

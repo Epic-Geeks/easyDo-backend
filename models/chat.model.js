@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-  const Service = sequelize.define("chatTable", {
+  const Service = sequelize.define("Chat", {
     ChatMessages: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       defaultValue: [],
