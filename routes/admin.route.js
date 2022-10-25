@@ -30,7 +30,7 @@ admin.get("/admin/:id", userAuth, getAdminById);
 admin.put("/admin/:id", userAuth, updateAdmin);
 
 admin.delete("/admin/:id", userAuth, deleteAdmin);
-admin.delete("/suspendAdmin/:id", userAuth, suspendAdmin);
+admin.delete("/susAdmin/:id", userAuth, suspendAdmin);
 
 // provider control routes
 admin.get("/customer", userAuth, ACL, getAllCustomers);
@@ -38,6 +38,6 @@ admin.delete("/susCustomer/:id", userAuth, ACL, suspendCustomer);
 
 // provider control routes
 admin.get("/provider", userAuth, ACL, getAllProviders);
-admin.delete("/providerSus/:id", userAuth, ACL, suspendProvider);
+admin.delete("/susProvider/:id", userAuth, ACL, suspendProvider);
 
 module.exports = admin;

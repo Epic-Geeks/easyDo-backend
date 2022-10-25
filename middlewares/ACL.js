@@ -74,7 +74,7 @@ const ACL = async (req, res, next) => {
 
   if (
     (method == "DELETE" || method == "PUT") &&
-    requested == "admin" &&
+    (requested == "admin" || requested == "suscustomer" || requested == "susprovider" || requested == "susadmin") &&
     (req.userInfo.role === "admin") &&
     (req.userInfo.id == req.params.id || req.userInfo.role === "admin")
   ) {

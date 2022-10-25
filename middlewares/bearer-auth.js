@@ -8,6 +8,9 @@ const userAuth = async (req, res, next) => {
     let reqURL = req.url.toLowerCase();
     let requested = reqURL.split("/")[1];
     let model = models[`${requested}Model`];
+    if (requested == "suscustomer" || requested == "susprovider" || requested == "susadmin") {
+      model = models.adminModel
+    }
     console.log("model", requested, models);
 
     if (!req.headers.authorization) {
