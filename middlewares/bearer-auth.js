@@ -1,6 +1,6 @@
 "use strict";
 
-const { customerModel, providerModel } = require("../models/index");
+const { customerModel, providerModel, adminModel } = require("../models/index");
 const models = require("../models/index");
 
 const userAuth = async (req, res, next) => {
@@ -72,6 +72,10 @@ const serviceAuth = async (req, res, next) => {
     const validUser = providerModel.authenticateToken(token);
     console.log(validUser);
     const userInfo = await providerModel.findOne({
+      where: { username: validUser.username },
+    }) || await customerModel.findOne({
+      where: { username: validUser.username },
+    }) || await adminModel.findOne({
       where: { username: validUser.username },
     });
     if (userInfo) {
