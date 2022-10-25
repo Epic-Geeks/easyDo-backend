@@ -82,6 +82,9 @@ async function getOrder(req, res) {
 
 async function updateCondition(req, res, next) {
   try {
+    if (req.userInfo.role === "provider") {
+      req.body.reviewComment = null;
+    }
     let requestedOrder = await Order.updateOrderStatus(
       req.params.id,
       req.params.condition,

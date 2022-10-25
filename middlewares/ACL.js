@@ -76,6 +76,7 @@ const ACL = async (req, res, next) => {
       const one = await serviceModel.findOne({ where: { id } });
       console.log(one.providerID === req.userInfo.id);
       if (one.providerID === req.userInfo.id || req.userInfo.role === "admin") {
+
         return next();
       }
       let error = {
