@@ -45,7 +45,10 @@ const orderAuth = async (req, res, next) => {
     console.log(validUser);
     const userInfo = await customerModel.findOne({
       where: { username: validUser.username },
+    }) || await providerModel.findOne({
+      where: { username: validUser.username },
     });
+    
     if (userInfo) {
       req.userInfo = userInfo;
       req.token = userInfo.token;

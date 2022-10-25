@@ -43,6 +43,12 @@ async function checkDate(req, res, next) {
 
 async function createNewOrder(req, res, next) {
   try {
+    if (req.userInfo.suspend) {
+      next({
+        message: "you are suspended, please contact the admin",
+        status: 403,
+      })
+    }
     req.body.customerID = req.userInfo.id;
     const obj = req.body;
     let newOrder = await Order.create(obj);

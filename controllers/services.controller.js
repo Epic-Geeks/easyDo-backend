@@ -33,8 +33,14 @@ async function getAllServices(req, res, next) {
   }
 }
 
-async function createNewService(req, res) {
+async function createNewService(req, res, next) {
   try {
+    if (req.userInfo.suspend) {
+      next({
+        message: "you are suspended, please contact the admin",
+        status: 403,
+      })
+    }
     if (req.files) {
       req.body.picture = await req.files.map(
         (file) => `${process.env.BACKEND_URL}/${file.filename}`

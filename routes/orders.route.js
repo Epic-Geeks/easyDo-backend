@@ -5,7 +5,7 @@ const express = require("express");
 const orders = express.Router();
 const serverError = require("../error-handlers/500");
 const { ACL } = require("../middlewares/ACL");
-const { orderAuth } = require("../middlewares/bearer-auth");
+const { orderAuth, userAuth } = require("../middlewares/bearer-auth");
 const { sendEmail } = require("../middlewares/handlebars");
 const {
   getAllOrders,
@@ -20,7 +20,7 @@ orders.get("/orders", getAllOrders);
 orders.post("/order", orderAuth, ACL, checkDate, createNewOrder, sendEmail);
 
 orders.get("/order/:id", serverError, getOrder);
-orders.put("/orderStatus/:id/:condition", updateCondition);
+orders.put("/orderStatus/:id/:condition", orderAuth, ACL, updateCondition);
 
 orders.delete("/order/:id", deleteOrder);
 
