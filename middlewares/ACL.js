@@ -23,6 +23,12 @@ const ACL = async (req, res, next) => {
   ) {
     const id = req.params.id;
     const orderOwner = await orderModel.findOne({ where: { id } });
+    if (req.userInfo.role === "customer" && orderOwner.status !== "done") {
+      return next({
+        message: "you are not authorized to do this action",
+        status: 403,
+      });
+    }
     console.log("req.userInfo", req.userInfo.id);
 
     if (
