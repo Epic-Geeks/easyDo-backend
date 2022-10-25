@@ -24,7 +24,7 @@ services.post(
 );
 
 services.get("/services", getAllServices);
-services.get("/service/:id", serverError, getService);
+services.get("/service/:id", serverError,serviceAuth, getService); // added the serviceAuth
 
 services.put(
   "/service/:id",

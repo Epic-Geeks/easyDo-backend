@@ -112,6 +112,9 @@ class Collection {
 
   getService(id, Provider, Order) {
     try {
+      if(!Order){
+        return this.model.findOne({ where: { id }, include: [Provider] });
+      }
       return this.model.findOne({ where: { id }, include: [Provider, Order] });
     } catch (e) {
       console.log("Error getting service", e.message || e);

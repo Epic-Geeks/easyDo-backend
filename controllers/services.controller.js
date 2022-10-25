@@ -25,7 +25,7 @@ async function updateService(req, res, next) {
 
 async function getAllServices(req, res, next) {
   try {
-    let allServices = await Service.getAllServices(providerModel, orderModel);
+    let allServices = await Service.getAllServices(providerModel, orderModel);// need to fix when get orders 
     res.status(200).json(allServices);
   } catch (error) {
     console.log(error);
@@ -59,10 +59,17 @@ async function createNewService(req, res, next) {
 
 async function getService(req, res) {
   try {
+    const role = req.userInfo.role;
+    
+    let model = orderModel
+    if(role == "customer"){
+      model = null;
+    }
+
     let requestedService = await Service.getService(
       req.params.id,
       providerModel,
-      orderModel
+      model
     );
     res.status(200).json(requestedService);
   } catch (error) {
