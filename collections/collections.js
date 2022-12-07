@@ -44,12 +44,13 @@ class Collection {
 
   async updateUser(id, obj) {
     try {
-      obj.password = await bycrpt.hash(obj.password, 10)
+      if(obj?.password) obj.password = await bycrpt.hash(obj.password, 10)
+      console.log(id, obj)
       let targeted = await this.model.findOne({ where: { id } });
       return await targeted.update(obj);
     } catch (e) {
-      console.log("Error update record: " + e.errors[0].message);
-      return ("Error update record: " + e.errors[0].message);
+      console.log("Error update record: " + e?.errors?.message);
+      return ("Error update record: " + e?.errors?.message);
     }
   }
 
@@ -58,8 +59,8 @@ class Collection {
       const service = await this.model.findOne({ where: { id } });
       return await service.update(obj);
     } catch (e) {
-      console.log("Error update recored: " + e.errors[0].message);
-      return ("Error update recored: " + e.errors[0].message);
+      console.log("Error update recored: " + e?.errors?.message);
+      return ("Error update recored: " + e?.errors?.message);
     }
   }
 
