@@ -20,7 +20,7 @@ async function getCustomer(req, res) {
   }
 }
 
-async function updateCustomer(req, res) {
+async function updateCustomer(req, res, next) {
   try {
     if (req.files && req.files.length > 0) {
       req.body.picture = req.files.map(

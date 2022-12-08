@@ -39,7 +39,11 @@ module.exports = (sequelize, DataTypes) => {
     reviewComment: {
       type: DataTypes.STRING,
       allowNull: true
-    }
+    },
+    // orderLocation: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
   });
   return order;
 };
