@@ -66,7 +66,7 @@ const signup = async (req, res) => {
       );
     }
     console.log("req.body", req.body);
-
+    req.body.email = req.body.email.toLowerCase();
     const user = await model.create(req.body);
     if (user) {
       res.status(201).json(user);
@@ -74,8 +74,8 @@ const signup = async (req, res) => {
       res.status(403).send("Invalid Signup");
     }
   } catch (e) {
-    console.log("Error update record: " + e?.errors[0]?.message);
-    return "Error update record: " + e?.errors[0]?.message;
+    console.log("Error update record: " + e);
+    return res.send("Error update record: " + e);
   }
 };
 

@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-  const Service = sequelize.define("Services", {
+  const Service = sequelize.define("Service", {
     serviceDescription: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     visibility: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
+    },
+    averageRate: {
+      type: DataTypes.DOUBLE,
+      defaultValue: 0.0,
     },
     providerID: {
       type: DataTypes.INTEGER,

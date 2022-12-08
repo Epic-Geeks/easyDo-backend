@@ -1,7 +1,7 @@
 "use strict";
 
 const models = require("../models");
-const { serviceModel, customerModel } = require("../models");
+const { serviceModel, customerModel, orderModel } = require("../models");
 
 const ACL = async (req, res, next) => {
   let reqURL = req.url.toLowerCase();
@@ -14,6 +14,36 @@ const ACL = async (req, res, next) => {
     req.userInfo.role == "customer"
   ) {
     return next();
+  }
+
+  if (
+    method == "PUT" &&
+    requested == "orderstatus" &&
+    (req.userInfo.role == "customer" || req.userInfo.role == "provider")
+  ) {
+    const id = req.params.id;
+    const orderOwner = await orderModel.findOne({ where: { id } });
+    if (req.userInfo.role === "customer" && orderOwner.status !== "done") {
+      return next({
+        message: "you are not authorized to do this action",
+        status: 403,
+      });
+    }
+    console.log("req.userInfo", req.userInfo.id);
+
+    if (
+      (req.userInfo.role == "customer" &&
+        req.params?.condition == "done" &&
+        orderOwner.customerID == req.userInfo.id) ||
+      (req.userInfo.role == "provider" &&
+        orderOwner.providerID == req.userInfo.id)
+    ) {
+      return next();
+    }
+    return next({
+      message: "you are not authorized to do this action",
+      status: 403,
+    });
   }
 
   if (
@@ -52,6 +82,7 @@ const ACL = async (req, res, next) => {
       const one = await serviceModel.findOne({ where: { id } });
       console.log(one.providerID === req.userInfo.id);
       if (one.providerID === req.userInfo.id || req.userInfo.role === "admin") {
+
         return next();
       }
       let error = {
@@ -74,8 +105,11 @@ const ACL = async (req, res, next) => {
 
   if (
     (method == "DELETE" || method == "PUT") &&
-    requested == "admin" &&
-    (req.userInfo.role === "admin") &&
+    (requested == "admin" ||
+      requested == "suscustomer" ||
+      requested == "susprovider" ||
+      requested == "susadmin") &&
+    req.userInfo.role === "admin" &&
     (req.userInfo.id == req.params.id || req.userInfo.role === "admin")
   ) {
     return next();

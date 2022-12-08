@@ -44,12 +44,13 @@ class Collection {
 
   async updateUser(id, obj) {
     try {
-      obj.password = await bycrpt.hash(obj.password, 10)
+      if(obj?.password) obj.password = await bycrpt.hash(obj.password, 10)
+      console.log(id, obj)
       let targeted = await this.model.findOne({ where: { id } });
       return await targeted.update(obj);
     } catch (e) {
-      console.log("Error update record: " + e.errors[0].message);
-      return ("Error update record: " + e.errors[0].message);
+      console.log("Error update record: " + e?.errors?.message);
+      return ("Error update record: " + e?.errors?.message);
     }
   }
 
@@ -58,8 +59,8 @@ class Collection {
       const service = await this.model.findOne({ where: { id } });
       return await service.update(obj);
     } catch (e) {
-      console.log("Error update recored: " + e.errors[0].message);
-      return ("Error update recored: " + e.errors[0].message);
+      console.log("Error update recored: " + e?.errors?.message);
+      return ("Error update recored: " + e?.errors?.message);
     }
   }
 
@@ -83,13 +84,14 @@ class Collection {
     }
   }
 
-  async updateOrderStatus(id, status) {
+  async updateOrderStatus(id, status, rate, comment) {
     try {
       let targetedOrder = await this.model.findOne({ where: { id } });
       if (!targetedOrder) {
         return "Order not found";
       }
-      return await targetedOrder.update({ status: status });
+      status !== "done"? comment = null : comment = comment;
+      return await targetedOrder.update({ status: status,  rateService: rate, reviewComment: comment });
     } catch (e) {
       console.log("Error while update order status", e.message || e);
       return ("Error while update order status", e.message || e);
@@ -111,6 +113,9 @@ class Collection {
 
   getService(id, Provider, Order) {
     try {
+      if(!Order){
+        return this.model.findOne({ where: { id }, include: [Provider] });
+      }
       return this.model.findOne({ where: { id }, include: [Provider, Order] });
     } catch (e) {
       console.log("Error getting service", e.message || e);
