@@ -58,6 +58,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    phoneNumber:{
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   });
 
   Customer.authenticateToken = (token) => {
