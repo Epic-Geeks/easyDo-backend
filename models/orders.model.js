@@ -39,6 +39,26 @@ module.exports = (sequelize, DataTypes) => {
     reviewComment: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    location: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    customerNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    customerName:{
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    providerName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    providerNumber:{
+      type: DataTypes.STRING,
+      allowNull: false
     }
   });
   return order;

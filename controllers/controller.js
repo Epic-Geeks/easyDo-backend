@@ -65,9 +65,9 @@ const signup = async (req, res) => {
         (file) => `${process.env.BACKEND_URL}/${file.filename}`
       );
     }
-    console.log("req.body", req.body);
     req.body.email = req.body.email.toLowerCase();
     const user = await model.create(req.body);
+    console.log(user)
     if (user) {
       res.status(201).json(user);
     } else {

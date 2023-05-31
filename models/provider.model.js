@@ -60,6 +60,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM("provider"),
       defaultValue: "provider",
     },
+    phoneNumber:{
+      type: DataTypes.STRING,
+      allowNull: false
+    }
 
   });
 
